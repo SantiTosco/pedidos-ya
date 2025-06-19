@@ -8,7 +8,9 @@ import { Router } from '@angular/router';
   imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
+  
 })
+
 export class HomeComponent implements OnInit {
   items: Array<{ image: string; name: string; description: string }> = [];
   constructor(
@@ -16,6 +18,11 @@ export class HomeComponent implements OnInit {
     private readonly globalStatusService: GlobalStatusService,
     private readonly router: Router
   ) {}
+
+  goToOrders(): void {
+    this.router.navigate(['/list-order']);
+
+}
 
   ngOnInit(): void {
     this.initialization();

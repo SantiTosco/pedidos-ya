@@ -1,0 +1,73 @@
+.order-list {
+  padding: 1rem;
+}
+.text-start{
+  background-color: #1E1E2E;
+  border-radius: 7px;
+  color: white;
+}
+.card {
+  width: 100%;
+  height:auto;
+
+  font-family: 'Sen';
+}
+
+.pedido {
+  border-bottom: 1px solid #FF8C00;
+  padding: 1rem 0;
+}
+
+.pedido-header {
+  display: flex;
+  justify-content: space-between;
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.pedido-header .entregado {
+  color: green;
+}
+
+.pedido-header .cancelado {
+  color: red;
+}
+
+.pedido-body {
+  display: flex;
+  align-items: center;
+}
+
+.logo {
+  width: 100px;
+  height: 100px;
+  border-radius: 8px;
+  margin-right: 1rem;
+}
+
+.info h3 {
+  margin: 0;
+}
+
+.pedido-footer {
+  margin-top: 0.5rem;
+}
+
+.opinar,
+.repetir {
+  margin-right: 0.5rem;
+  padding: 0.4rem 0.8rem;
+  border: none;
+  border-radius: 5px;
+}
+
+.opinar {
+  background-color: white;
+  border: 1px solid #FF8C00;
+  color: #FF8C00;
+}
+
+.repetir {
+  background-color: #FF8C00;
+  color: white;
+}

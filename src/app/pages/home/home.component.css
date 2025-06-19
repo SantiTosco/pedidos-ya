@@ -2,3 +2,27 @@
   max-height: 10em;
   object-fit: cover;
 }
+.dropdown{
+  font-family: 'Sen', sans-serif;
+  font-weight: bold;
+  color: #FF8C00;
+  padding: 1rem 1.5rem;
+}
+.dropdown-menu{
+  font-family: 'Sen', sans-serif;
+  font-weight: bold;
+  background-color:#ffffff;
+  padding: 1rem 1rem;
+
+}
+.dropdown-item{
+  font-family: 'Sen', sans-serif;
+  font-weight: bold;
+  background-color:white;
+}
+.dropdown-item:hover{
+  color:#FF8C00;
+  font-size: 18px;
+
+  
+}
