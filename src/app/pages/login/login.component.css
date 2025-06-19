@@ -1,13 +1,16 @@
 .card {
   width: 100%;
   max-width: 400px;
+  font-family: 'Sen';
 }
 
-.cuadro {
-  background-color: #f8f9fa;
-  padding: 40px;
-  border-radius: 10px;
+.text-start {
+  background-color: #1E1E2E;
+  border-radius: 7px;
+  color: white;
+  max-width: 400px;
 }
+
 
 .form-control {
   height: 50px;
@@ -15,7 +18,7 @@
 }
 
 .form-control:focus {
-  box-shadow: 0 0 0 0.25rem rgba(66, 133, 244, 0.25);
+  box-shadow: 0 0 0 0.25rem #FF8C00;
 }
 
 .btn-primary {

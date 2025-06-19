@@ -1,25 +1,11 @@
 <nav class="navbar navbar-expand-lg bg-body-tertiary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="/login">Iniciar Sesión</a>
+  <div class="container-fluid ">
+    <div class="d-flex justify-content-between w-100">
+      <a class="navbar-login" href="/login">Iniciar Sesión</a>
+      <a class="navbar-cart" href="/create-order"><i class="bi bi-cart3"></i> Ver Carrito</a>
+    </div>
+    
   </div>
 </nav>
-@if(isLoading()){
-<!-- Modal de carga -->
-<div class="modal fade show d-block" tabindex="-1" role="dialog"
-  style="background-color: rgba(0, 0, 0, 0.5); z-index: 1050;">
-  <div class="modal-dialog modal-dialog-centered" role="document">
-    <div class="modal-content text-center p-4 border-0 shadow-lg" style="border-radius: 1rem;">
-      <div class="d-flex flex-column align-items-center">
-        <!-- Spinner mejorado -->
-        <div class="spinner-border text-primary mb-3" role="status" style="width: 4rem; height: 4rem;">
-          <span class="visually-hidden">Cargando...</span>
-        </div>
-        <!-- Texto -->
-        <h5 class="modal-title mb-0">Cargando la página...</h5>
-        <small class="text-muted mt-2">Por favor, espere un momento</small>
-      </div>
-    </div>
-  </div>
-</div>
-}
+
 <router-outlet />
