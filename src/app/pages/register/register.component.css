@@ -1,7 +1,12 @@
+a {
+  text-decoration: none;
+  color:  inherit
+}
+
 
 .card {
   width: 100%;
-  max-width: 400px;
+  max-width: 400px; 
 }
 
 .text-start {

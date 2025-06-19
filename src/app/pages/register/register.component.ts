@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { ReactiveFormsModule } from '@angular/forms';
+import { Router } from '@angular/router';
 
 
 @Component({
@@ -11,9 +12,20 @@ import { ReactiveFormsModule } from '@angular/forms';
 })
 export class RegisterComponent {
     showPassword: boolean = false;
+    showConfirmPassword: boolean = false;
+
+    constructor(private router: Router) {}
 
     togglePassword(){
         this.showPassword = !this.showPassword;
+    }
+
+    toggleConfirmPassword(){
+        this.showConfirmPassword = !this.showConfirmPassword;
+    }
+
+    redirectToHome(){
+        this.router.navigate(['']);
     }
 }
 

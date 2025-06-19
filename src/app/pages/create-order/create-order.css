@@ -1,0 +1,39 @@
+.cart-item {
+  transition: box-shadow 0.3s;
+}
+.cart-item:hover {
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.quantity-controls button {
+    width: 30px;
+    font-size: 22px;
+    font-weight: bold;
+}
+
+.btn-pagar {
+    background-color: #FF8C00;
+    border: none;
+    color: white;
+    padding: 10px 20px;
+    text-align: center;
+    border-radius: 8px;
+}
+
+.btn-volver:hover {
+    background-color: #FF8C00;
+    color: white;
+    font-size: 17px;
+}
+
+.btn-menos {
+    border: none;
+    background: none;
+    color: red;
+}
+
+.btn-mas {
+    border: none;
+    background: none;
+    color: green;
+}

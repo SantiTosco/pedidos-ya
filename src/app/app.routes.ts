@@ -21,4 +21,6 @@ export const routes: Routes = [
   { path: 'register', component: RegisterComponent},
   { path: 'create-order', component: CreateOrder},
   { path: 'list-order', component: ListOrderComponent}
+  { path: 'register', component: RegisterComponent },
+  { path: 'create-order', component: CreateOrder },
 ];
