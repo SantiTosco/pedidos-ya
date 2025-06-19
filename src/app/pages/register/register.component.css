@@ -1,15 +1,23 @@
+
 .card {
   width: 100%;
   max-width: 400px;
 }
 
-.cuadro {
-  background-color: #f8f9fa;
-  padding: 40px;
-  border-radius: 10px;
+.text-start {
+  background-color: #1e1e2e;
+  border-radius: 7px;
+  max-width: 400px;
+}
+
+.text-center {
+  text-align: center;
+  color: rgb(253, 252, 252);
+  ;
+}
 
 
-.form-control { 
+.form-control {
   height: 50px;
   font-size: 15px;
 }
@@ -37,5 +45,4 @@
   
   font-size: 20px;
   color: #FF8C00;
-}
 }
