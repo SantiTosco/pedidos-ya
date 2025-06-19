@@ -13,7 +13,8 @@
   font-family: 'Sen';
 }
 
-.pedido {
+.pedido-body {
+  display: flex;
   border-bottom: 1px solid #FF8C00;
   padding: 1rem 0;
 }
