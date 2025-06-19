@@ -4,13 +4,6 @@ import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 
 
-interface Item {
-  image: string;
-  name: string;
-  price: number;
-  quantity: number;
-}
-
 @Component({
   selector: 'app-create-order',
   imports: [CommonModule],
@@ -21,27 +14,7 @@ interface Item {
 
 export class CreateOrder {
 
-  //items: Array<{ image: string; name: string; price: number; quantity: number }> = [];  
-  items: Item[] = [
-    {
-      image: 'https://www.laespanolaaceites.com/wp-content/uploads/2019/06/pizza-margarita-1080x671.jpg',
-      name: 'Pizza Margherita',
-      price: 10.99,
-      quantity: 1
-    },
-    {
-      image: 'https://encrypted-tbn3.gstatic.com/images?q=tbn:ANd9GcREaic2Cr3jjwQWZwOVoDQNdOFaOe8cSuAPvXNqNDZIjS96nTd-l6g_PI7lYxE1iGpTFz5iyGKyM6D-UvZC_TmRRCc1utE9Tr-aa_uy7A',
-      name: 'Spaghetti Carbonara',
-      price: 12.99,
-      quantity: 2
-    },
-    {
-      image: 'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTjfFdDuNiSRq-9lzAw9NVEdgiMfXQf0TSAm96JNrQ3tDg-D7SiWciYkmlrAVpsJ7mSjswWMN-nOB0mHdYSRsVPKsPaB4wdSNTfRX9P1g',
-      name: 'Caesar Salad',
-      price: 8.99,
-      quantity: 1
-    }
-  ];
+  items: Array<{ image: string; name: string; price: number; quantity: number }> = [];  
 
   constructor(
     private readonly apiService: ApiService,
@@ -50,15 +23,15 @@ export class CreateOrder {
     this.initialization();
   }
 
-  /*async initialization(): Promise<void> {
+  async initialization(): Promise<void> {
     try {
-      const data = await this.apiService.getData();
+      const data = await this.apiService.getItemsOnCart();
       this.items = data;
     } catch (error) {
       console.error('Error fetching data:', error);
     }
-  }*/
-  initialization(): void {}
+  }
+
 
   removeItem(itemName: string): void {
     const index = this.items.findIndex(item => item.name === itemName);

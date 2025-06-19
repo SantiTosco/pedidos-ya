@@ -12,11 +12,16 @@ import { Router } from '@angular/router';
 })
 export class RegisterComponent {
     showPassword: boolean = false;
+    showConfirmPassword: boolean = false;
 
     constructor(private router: Router) {}
 
     togglePassword(){
         this.showPassword = !this.showPassword;
+    }
+
+    toggleConfirmPassword(){
+        this.showConfirmPassword = !this.showConfirmPassword;
     }
 
     redirectToHome(){

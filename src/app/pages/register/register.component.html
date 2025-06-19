@@ -39,14 +39,14 @@
           <label for="confirmPassword" class="form-label">INGRESE NUEVAMENTE SU CONTRASEÑA</label>
           <div class="input-group">
             <input
-              [type]="showPassword ? 'text' : 'password'"
+              [type]="showConfirmPassword ? 'text' : 'password'"
               class="form-control"
               id="confirmPassword"
               placeholder="••••••••"
               required
             >
-            <span class="input-group-text" (click)="togglePassword()" style="cursor: pointer;">
-              <i class="bi {{ showPassword ? 'bi-eye-slash' : 'bi-eye' }}"></i>
+            <span class="input-group-text" (click)="toggleConfirmPassword()" style="cursor: pointer;">
+              <i class="bi {{ showConfirmPassword ? 'bi-eye-slash' : 'bi-eye' }}"></i>
             </span>
           </div>
         </div>
