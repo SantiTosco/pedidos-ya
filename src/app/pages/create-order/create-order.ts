@@ -35,7 +35,7 @@ export class CreateOrder {
 
   removeItem(itemName: string): void {
     const index = this.items.findIndex(item => item.name === itemName);
-    if (index) {
+    if (index !== -1) {
       this.items.splice(index, 1);
     }
   }
