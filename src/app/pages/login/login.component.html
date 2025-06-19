@@ -33,13 +33,13 @@
             <label class="form-check-label" for="remember">Recordarme</label>
           </div>
           <div>
-          <a href="" class="text-decoration-none" 
+          <button class="btn-forgotpsw text-decoration-none" 
              style="color: #FF8C00;">
-            ¿Olvidaste tu contraseña?</a>
+            ¿Olvidaste tu contraseña?</button>
         </div>
       </div>
       </form>
-      <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+      <button (click)="redirectToHome()" type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
       <div class="text-center mt-3">
         <p class="mb-0">¿No tienes cuenta? 
           <a href="/register" class="text-decoration-none" style="color: #FF8C00;">Regístrate</a></p>

@@ -13,4 +13,10 @@ export class ApiService {
   > {
      return (await axios.get(config.urls.getFood)).data
   }
+
+  async getItemsOnCart(): Promise<
+    Array<{ image: string; name: string; price: number; quantity: number }>
+    > {
+      return (await axios.get(config.urls.getCart)).data
+    }
 }

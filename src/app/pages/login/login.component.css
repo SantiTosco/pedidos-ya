@@ -1,7 +1,6 @@
 .card {
   width: 100%;
   max-width: 400px;
-  font-family: 'Sen';
 }
 
 .text-start {
@@ -41,4 +40,8 @@
   font-size: 20px;
   color: #FF8C00;
 }
+
+.btn-forgotpsw {
+  border:none;
+  background:none;
 }
