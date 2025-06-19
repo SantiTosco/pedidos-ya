@@ -1,26 +1,59 @@
-<div class="container" id="login-container">
+<div class="container mt-5" id="login-container">
   <div class="container d-flex justify-content-center align-items-center vh-100">
     <div class="card shadow p-4">
-      <h2 class="text-center mb-4">Iniciar Sesión</h2>
+      <div class="cuadro">
+        <h2 class="text-center mb-2">Iniciar Sesión</h2>
+        <h5 class="text-center mb-2">Inicia sesión en tu cuenta</h5>
+      </div>
+      
       <form>
+        <!--CAMPO MAIL-->
         <div class="mb-3">
-          <label for="email" class="form-label">Correo electrónico</label>
+          <label for="email" class="form-label">EMAIL</label>
           <input type="email" class="form-control" id="email" placeholder="usuario@ejemplo.com" required>
         </div>
+        <!--CAMPO CONTRASEÑA-->
         <div class="mb-3">
-          <label for="password" class="form-label">Contraseña</label>
-          <input type="password" class="form-control" id="password" placeholder="••••••••" required>
+          <label for="password" class="form-label">CONTRASEÑA</label>
+          <div class="input-group">
+            <input
+              [type]="showPassword ? 'text' : 'password'"
+              class="form-control"
+              id="password"
+              placeholder="••••••••"
+              required
+            >
+            <span class="input-group-text" (click)="togglePassword()" style="cursor: pointer;">
+              <i class="bi {{ showPassword ? 'bi-eye-slash' : 'bi-eye' }}"></i>
+            </span>
+          </div>
         </div>
-        <div class="mb-3 form-check">
-          <input type="checkbox" class="form-check-input" id="remember">
-          <label class="form-check-label" for="remember">Recordarme</label>
+        <div class="d-flex justify-content-between align-items-center mb-5">
+          <div class="form-check">
+            <input type="checkbox" class="form-check-input" id="remember">
+            <label class="form-check-label" for="remember">Recordarme</label>
+          </div>
+          <div>
+          <a href="" class="text-decoration-none" 
+             style="color: #FF8C00;">
+            ¿Olvidaste tu contraseña?</a>
         </div>
-        <button type="submit" class="btn btn-primary w-100">Ingresar</button>
-      </form>
-      <div class="text-center mt-3">
-        <a href="#" class="text-decoration-none">¿Olvidaste tu contraseña?</a>
       </div>
-    </div>
+      </form>
+      <button type="submit" class="btn btn-primary w-100">Iniciar Sesión</button>
+      <div class="text-center mt-3">
+        <p class="mb-0">¿No tienes cuenta? 
+          <a href="" class="text-decoration-none" style="color: #FF8C00;">Regístrate</a></p>
+      </div>
+      <div class="text-center mt-3">
+        <p class="mb-2">Ó</p>
+        <div class="d-flex justify-content-center">
+          <button class="btn btn-outline-secondary rounded-circle mx-2">
+            <i class="bi bi-google"></i>
+          </button>
+        </div>
+      </div>
   </div>
 
 </div>
+
