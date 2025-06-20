@@ -2,24 +2,23 @@
   <div class="container d-flex flex-column justify-content-center align-items-center">
     <div class="text-start shadow p-4 w-100">
       <div class="d-flex align-items-center mb-2">
-  <button (click)="goBack()" class="btn btn-link p-0 me-2" title="Volver">
-    <i class="bi bi-arrow-left fs-4"></i>
-  </button>
-  <p class="mb-0">Volver</p>
-</div>
-        <h2>Mis Pedidos</h2>
+        <button (click)="goBack()" class="btn btn-link p-0 me-2" title="Volver">
+          <i class="bi bi-arrow-left fs-4"></i>
+        </button>
+        <p class="mb-0">Volver</p>
       </div>
+      <h2>Mis Pedidos</h2>
+    </div>
     <div class="card shadow p-4 w-100"> 
-      <div *ngFor="let pedido of pedidos" class="pedido">
-        <div class="pedido-header">
+      @for (pedido of pedidos; track $index) {
+        <div class="pedido-header p-2">
           <span>{{ pedido.tipo }}</span>
           <span [class.entregado]="pedido.estado === 'Entregado'"
                 [class.cancelado]="pedido.estado === 'Cancelado'">
             {{ pedido.estado }}
           </span>
         </div>
-
-        <div class="pedido-body d-flex align-items-center">
+        <div class="pedido-body d-flex align-items-center p-4">
           <img [src]="pedido.imagen" alt="{{pedido.nombre}}" class="logo">
           <div class="info">
             <h3>{{ pedido.nombre }}</h3>
@@ -29,11 +28,11 @@
           </div>
         </div>
 
-        <div class="pedido-footer">
+        <div class="pedido-footer p-2 mb-2">
           <button class="opinar">Opinar</button>
           <button class="repetir">Ver</button>
         </div>
-      </div>
+      }
     </div>
-    </div>
+  </div>
 </div>

@@ -15,15 +15,15 @@ a {
 .navbar-login:hover {
     border-radius: 8px;
     height: 30px;
-    width: 120px;
-    font-size: 17px;
+    width: 130px;
     background-color: #FF8C00;
+    color: white;
 }
 
 .navbar-cart:hover {
     border-radius: 8px;
     height: 30px;
-    width: 120px;
-    font-size: 17px;
+    width: 130px;
     background-color: #FF8C00;
+    color: white;
 }

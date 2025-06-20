@@ -1,3 +1,13 @@
+img {
+    width: 100%;
+    max-width: 200px; /* ancho máximo deseado */
+    aspect-ratio: 1 / 1; /* mantiene proporción cuadrada */
+    overflow: hidden;
+    object-fit: cover;
+    display: block;
+}
+
+
 .cart-item {
   transition: box-shadow 0.3s;
 }

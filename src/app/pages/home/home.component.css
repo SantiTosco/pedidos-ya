@@ -13,21 +13,28 @@
   font-weight: bold;
   background-color:#ffffff;
   padding: 1rem 1rem;
+  width: 200px;
 
 }
 .dropdown-item{
   font-family: 'Sen', sans-serif;
   font-weight: bold;
   background-color:white;
+  cursor: pointer;
 }
 .dropdown-item:hover{
   color:#FF8C00;
-  font-size: 18px;
-
-  
 }
 
 .btn {
   background-color: #FF8C00;
   border: none;
+}
+
+#dropdownMenuButton {
+  color: white;
+}
+
+#dropdownMenuButton:hover{
+  background-color: #FF7F00;
 }
