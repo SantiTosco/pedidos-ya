@@ -1,66 +1,75 @@
 <nav>
-    <div class="container">
-        <div class="d-flex justify-content-between align-items-center py-3">
-            <button class="btn btn-volver" (click)="goBack()">
-                <i class="bi bi-arrow-left"></i> Volver
-            </button>
-        </div>
+  <div class="container">
+    <div class="d-flex justify-content-between align-items-center py-3">
+      <button class="btn btn-volver" (click)="goBack()">
+        <i class="bi bi-arrow-left"></i> Volver
+      </button>
     </div>
+  </div>
 </nav>
+
 <div class="cart-container">
-    <h2 class="mb-4 text-center">Mi Carrito</h2>
-    <div class="cart-items">
-        @for (item of items; track $index) {
-            <div class="cart-item card mb-3 p-3 ">
-                <div class="row g-0">
-                    <!-- Columna de la imagen -->
-                    <div class="img col-md-2 d-flex align-items-center justify-content-center flex-wrap gap-4">
-                        <img 
-                        [src]="item.image" 
-                        [alt]="item.name"
-                        class="img-fluid rounded"
-                        style="max-height: 100px;"
-                        >
-                    </div>
-                    <!-- Columna de detalles -->
-                    <div class="col-md-8">
-                        <div class="card-body">
-                            <h5 class="card-title">{{ item.name }}</h5>
-                            <div class="d-flex justify-content-between">
-                                <p class="card-text mb-0">Price: <strong>{{ item.price | currency }}</strong></p>
-                                 <!-- Controles de cantidad + Remove (apilados) -->
-                                <div class="d-flex flex-column">
-                                    <div class="quantity-controls mb-2">
-                                        <button (click)="updateQuantity(item.name, -1)" class="btn btn-menos btn-outline-secondary">-</button>
-                                        <span class="mx-2">{{ item.quantity }}</span>
-                                        <button (click)="updateQuantity(item.name, 1)" class="btn btn-mas btn-outline-secondary">+</button>
-                                    </div>
-                                    <button 
-                                    (click)="removeItem(item.name)" 
-                                    class="btn btn-danger btn-sm align-self-start"
-                                    >
-                                    <i class="bi bi-trash"></i> Eliminar
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+  <h2 class="mb-4 text-center">Mi Carrito</h2>
+
+  <div class="cart-items">
+    @for (item of items; track $index) {
+      <div class="cart-item card mb-3 p-3">
+        <div class="row g-0">
+          <!-- Columna de la imagen -->
+          <div class="img col-md-2 d-flex align-items-center justify-content-center flex-wrap gap-4">
+            <img 
+              [src]="item.image" 
+              [alt]="item.name"
+              class="img-fluid rounded"
+              style="max-height: 100px;"
+            >
+          </div>
+          <!-- Columna de detalles -->
+          <div class="col-md-8">
+            <div class="card-body">
+              <h5 class="card-title">{{ item.name }}</h5>
+              <div class="d-flex justify-content-between">
+                <p class="card-text mb-0">Price: <strong>{{ item.price | currency }}</strong></p>
+                <!-- Controles de cantidad + Remove (apilados) -->
+                <div class="d-flex flex-column">
+                  <div class="quantity-controls mb-2">
+                    <button (click)="updateQuantity(item.name, -1)" class="btn btn-menos btn-outline-secondary">-</button>
+                    <span class="mx-2">{{ item.quantity }}</span>
+                    <button (click)="updateQuantity(item.name, 1)" class="btn btn-mas btn-outline-secondary">+</button>
+                  </div>
+                  <button 
+                    (click)="removeItem(item.name)" 
+                    class="btn btn-danger btn-sm align-self-start"
+                  >
+                    <i class="bi bi-trash"></i> Eliminar
+                  </button>
                 </div>
+              </div>
             </div>
-        }
+          </div>
+        </div>
+      </div>
+    }
+
     <!-- Vaciar carrito -->
     <div class="d-flex justify-content-end mb-3" *ngIf="items.length > 0">
-        <button class="btn btn-danger" (click)="clearCart()">
-            <i class="bi bi-trash"></i> Vaciar Carrito
-        </button>
+      <button class="btn btn-danger" (click)="clearCart()">
+        <i class="bi bi-trash"></i> Vaciar Carrito
+      </button>
     </div>
-    <!-- Total y botón de pago -->
-    <div class="cart-total card mt-3 p-3">
-        <div class="d-flex justify-content-between">
-            <h5 class="mb-0">Total:</h5>
-            <h4 class="mb-0">{{ getTotal() | currency }}</h4>
-        </div>
-        <button class="btn btn-pagar w-100 mt-3">Ir a Pagar</button>
+
+    <!-- Si carrito tiene items, mostrar Total y Pagar -->
+    <div *ngIf="items.length > 0" class="cart-total card mt-3 p-3">
+      <div class="d-flex justify-content-between">
+        <h5 class="mb-0">Total:</h5>
+        <h4 class="mb-0">{{ getTotal() | currency }}</h4>
+      </div>
+      <button class="btn btn-pagar w-100 mt-3">Ir a Pagar</button>
     </div>
+
+    <!-- Si carrito está vacío, mostrar mensaje -->
+    <div *ngIf="items.length === 0" class="text-center my-5">
+      <h4>🛒 Tu carrito está vacío! 😞</h4>
     </div>
+  </div>
 </div>
