@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { CommonModule } from '@angular/common';
+import { CommonModule} from '@angular/common';
 import { Location } from '@angular/common';
-
+import { PedidoService } from '../../services/pedido.service';
+import {HttpClient} from '@angular/common/http';
+import {OnInit} from '@angular/core';
 interface Pedido {
   tipo: 'Comida' | 'Bebida';
   estado: 'Entregado' | 'Cancelado';
@@ -20,11 +22,35 @@ interface Pedido {
   imports: [CommonModule],
   standalone:true
 })
-export class ListOrderComponent {
-  constructor(private location: Location) {}
+export class ListOrderComponent implements OnInit{
+  
+  pedidos: Pedido[] = [];
+
+  constructor(private pedidoService: PedidoService) {
+  }
+
+  ngOnInit(): void {
+  this.pedidoService.getPedidos().subscribe({
+      next: (data) => {
+      // data tiene la estructura completa con items, meta, links
+      this.pedidos = data.items.map((item: any) => ({
+        id: item.id,
+        estado: item.estado
+      }));
+    },
+    error: (err) => console.error(err)
+  });
+}
+}
+ /*constructor(private location: Location) {}
   goBack() {
     this.location.back();
   }
+
+ 
+
+}
+
   pedidos: Pedido[] = [
     {
       tipo: 'Comida',
@@ -58,4 +84,4 @@ export class ListOrderComponent {
     }
   ];
 }
-
+*/

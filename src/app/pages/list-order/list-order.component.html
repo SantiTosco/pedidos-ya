@@ -1,16 +1,23 @@
 <div class="container mt-5" >
   <div class="container d-flex flex-column justify-content-center align-items-center">
     <div class="text-start shadow p-4 w-100">
-      <div class="d-flex align-items-center mb-2">
+      <!--<div class="d-flex align-items-center mb-2">
         <button (click)="goBack()" class="btn btn-link p-0 me-2" title="Volver">
-          <i class="bi bi-arrow-left fs-4"></i>
         </button>
         <p class="mb-0">Volver</p>
-      </div>
+      </div>-->
       <h2>Mis Pedidos</h2>
+        <div class="card shadow p-4 w-100">
+      <div class="pedido-header p-2"></div>
+        <div *ngFor="let pedido of pedidos">
+          <p>ID: {{ pedido?.id }}</p>
+          <p>Estado: {{ pedido?.estado }}</p>
+        </div>
     </div>
-    <div class="card shadow p-4 w-100"> 
-      @for (pedido of pedidos; track $index) {
+    </div>
+  
+
+     <!-- @for (pedido of pedidos; track $index) {
         <div class="pedido-header p-2">
           <span>{{ pedido.tipo }}</span>
           <span [class.entregado]="pedido.estado === 'Entregado'"
@@ -35,4 +42,4 @@
       }
     </div>
   </div>
-</div>
+</div>-->
