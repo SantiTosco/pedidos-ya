@@ -8,11 +8,10 @@ import { Router } from '@angular/router';
   imports: [],
   templateUrl: './home.component.html',
   styleUrl: './home.component.css',
-  
 })
-
 export class HomeComponent implements OnInit {
   items: Array<{ image: string; name: string; description: string }> = [];
+
   constructor(
     private readonly apiService: ApiService,
     private readonly globalStatusService: GlobalStatusService,
@@ -21,8 +20,11 @@ export class HomeComponent implements OnInit {
 
   goToOrders(): void {
     this.router.navigate(['/list-order']);
+  }
 
-}
+  goToProfile(): void {
+    this.router.navigate(['/perfil']); // ✅ nueva función para navegar al perfil
+  }
 
   ngOnInit(): void {
     this.initialization();
@@ -39,5 +41,4 @@ export class HomeComponent implements OnInit {
       this.globalStatusService.setLoading(false);
     }
   }
-
 }
