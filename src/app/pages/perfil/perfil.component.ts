@@ -48,9 +48,9 @@ export class PerfilComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loading = true; // ✅ Mostrar loading al inicio
+    this.loading = true;
 
-    // Opción 1: Obtener del localStorage
+    // Obtener del localStorage como respaldo
     const userFromStorage = this.authService.getCurrentUser();
     if (userFromStorage) {
       console.log('👤 Usuario desde localStorage:', userFromStorage);
@@ -58,26 +58,53 @@ export class PerfilComponent implements OnInit {
       this.populateForm(userFromStorage);
     }
 
-    // Opción 2: Hacer petición al backend para datos actualizados
+    // Hacer petición al backend para datos actualizados
     this.userService.getProfile().subscribe({
-      next: (response: User) => {
+      next: (response) => {
         console.log('👤 Usuario desde API:', response);
-        this.user = response;
-        this.populateForm(response); // ✅ Llenar el formulario con los datos
+        
+        // ✅ Verificar si la respuesta es válida
+        if (response && response.email) {
+          this.user = response;
+          this.populateForm(response);
+        } else {
+          console.warn('⚠️ API devolvió datos inválidos, usando localStorage');
+          // Si API no devuelve datos válidos, usar localStorage
+          if (userFromStorage) {
+            this.user = userFromStorage;
+            this.populateForm(userFromStorage);
+          } else {
+            this.showMessage('No se pudieron cargar los datos del usuario', 'error');
+          }
+        }
         this.loading = false;
       },
       error: (error) => {
         console.error('Error al obtener perfil:', error);
-        this.showMessage('Error al cargar el perfil', 'error');
+        
+        // ✅ Si hay error en API, usar localStorage como respaldo
+        if (userFromStorage) {
+          console.log('🔄 Usando datos de localStorage como respaldo');
+          this.user = userFromStorage;
+          this.populateForm(userFromStorage);
+          this.showMessage('Usando datos guardados localmente', 'success');
+        } else {
+          this.showMessage('Error al cargar el perfil', 'error');
+        }
         this.loading = false;
       }
     });
   }
 
-  // ✅ Método para llenar el formulario - solo email
-  private populateForm(user: User): void {
+  // ✅ Método para llenar el formulario - con validación null
+  private populateForm(user: User | null): void {
+    if (!user || !user.email) {
+      console.warn('⚠️ No se puede llenar el formulario: usuario inválido', user);
+      return;
+    }
+
     this.profileForm.patchValue({
-      email: user.email || '',
+      email: user.email,
       password: '' // Siempre vacío por seguridad
     });
   }
