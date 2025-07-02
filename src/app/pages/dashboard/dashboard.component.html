@@ -1,0 +1,51 @@
+<div
+  class="container mt-4"
+  *ngIf="mostrarMensaje"
+>
+  <div
+    class="alert alert-success fade"
+    [class.show]="mostrarFade"
+  >
+    <i class="fas fa-check-circle me-2"></i>
+    ¡Bienvenido! Has iniciado sesión correctamente.
+  </div>
+</div>
+<div class="dropdown d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
+        <i class="bi bi-person-circle me-2"></i> Mi Perfil
+      </button>
+      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+          <li><a class="dropdown-item" (click)="goToOrders()">Mis Pedidos</a></li>
+          <li><a class="dropdown-item" (click)="goToProfile()">Ver Perfil</a></li>
+          <li><a class="dropdown-item">Mis Direcciones</a></li>
+          <li><a class="dropdown-item">Ayuda en Línea</a></li>
+          <li><hr class="dropdown-divider"></li>
+          <li><a class="dropdown-item text-danger">Cerrar Sesión</a></li>
+      </ul>
+    </div>  
+<div class="container py-5">
+  <div class="d-flex align-items-center mb-4">
+    <div>
+      <h1 class="fw-bold mb-1">Explorá las mejores opciones</h1>
+      <p class="text-muted mb-0">Descubrí lo más pedido cerca tuyo</p>
+    </div> 
+  </div>
+  <!-- Grid de Cards -->
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    @for(item of items; track $index) {
+      <div class="col">
+        <div class="card h-100 shadow-sm">
+          <img [src]="item.image" class="card-img-top">
+          <div class="card-body">
+            <h5 class="card-title">{{ item.name }}</h5>
+            <p class="card-text text-muted">{{ item.description }}</p>
+          </div>
+          <div class="card-footer bg-white border-top-0">
+            <button class="btn btn-orange">Ver Más</button>
+          </div>
+        </div>
+      </div>
+    }
+  </div>
+</div>
+

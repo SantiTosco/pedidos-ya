@@ -18,12 +18,11 @@ export class HomeComponent implements OnInit {
     private readonly router: Router
   ) {}
 
-  goToOrders(): void {
-    this.router.navigate(['/list-order']);
+  goToLogin(): void {
+    this.router.navigate(['/login']);
   }
-
-  goToProfile(): void {
-    this.router.navigate(['/perfil']); // ✅ nueva función para navegar al perfil
+  goToRegister(): void {
+    this.router.navigate(['/register']);
   }
 
   ngOnInit(): void {

@@ -1,16 +1,14 @@
-<div class="dropdown d-flex justify-content-end mb-3">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-person-circle me-2"></i> Mi Perfil
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-          <li><a class="dropdown-item" (click)="goToOrders()">Mis Pedidos</a></li>
-          <li><a class="dropdown-item" (click)="goToProfile()">Ver Perfil</a></li>
-          <li><a class="dropdown-item">Mis Direcciones</a></li>
-          <li><a class="dropdown-item">Ayuda en Línea</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item text-danger">Cerrar Sesión</a></li>
-      </ul>
-    </div>  
+<div class="d-flex justify-content-end gap-2 mt-3 me-3">
+  <button class="btn btn-outline-primary" (click)="goToLogin()">
+    <i class="bi bi-box-arrow-in-right me-1"></i>
+    Iniciar Sesión
+  </button>
+
+  <button class="btn btn-primary" (click)="goToRegister()">
+    <i class="bi bi-person-plus-fill me-1"></i>
+    Registrarse
+  </button>
+</div>
 <div class="container py-5">
   <div class="d-flex align-items-center mb-4">
     <div>
@@ -29,7 +27,7 @@
             <p class="card-text text-muted">{{ item.description }}</p>
           </div>
           <div class="card-footer bg-white border-top-0">
-            <button class="btn btn-primary w-100">Ver Más</button>
+            <button class="btn btn-orange">Ver Más</button>
           </div>
         </div>
       </div>

@@ -1,0 +1,42 @@
+import { inject } from '@angular/core';
+import { Router, CanActivateFn } from '@angular/router';
+
+// Guard funcional para Angular standalone
+export const authGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  
+  // Verificar si el usuario está autenticado
+  const isAuthenticated = checkAuthStatus();
+  
+  if (isAuthenticated) {
+    return true;
+  } else {
+    // Redirigir al login si no está autenticado
+    router.navigate(['/login']);
+    return false;
+  }
+};
+
+// Función auxiliar para verificar autenticación
+function checkAuthStatus(): boolean {
+  // Aquí puedes implementar tu lógica de verificación
+  // Por ejemplo, verificar si existe un token en localStorage
+  const token = localStorage.getItem('authToken');
+  const user = localStorage.getItem('user');
+  
+  return !!(token && user);
+}
+
+// Guard para evitar que usuarios autenticados accedan al login
+export const loginGuard: CanActivateFn = (route, state) => {
+  const router = inject(Router);
+  const isAuthenticated = checkAuthStatus();
+  
+  if (isAuthenticated) {
+    // Si ya está autenticado, redirigir al dashboard
+    router.navigate(['/dashboard']);
+    return false;
+  }
+  
+  return true;
+};
