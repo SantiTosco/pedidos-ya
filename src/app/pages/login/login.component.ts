@@ -31,14 +31,14 @@ export class LoginComponent implements OnInit {
   ngOnInit() {
     // 🔍 DEBUG: Ver estado inicial
     console.log('=== DEBUG AUTH STATE ===');
-    console.log('Token en localStorage:', localStorage.getItem('accessToken'));
+    console.log('Token en localStorage:', localStorage.getItem('token'));
     console.log('¿Está autenticado?', this.authService.isAuthenticated());
     console.log('URL actual:', this.router.url);
     
     // Suscribirse a cambios de estado de autenticación
-    this.authService.isAuthenticated$.subscribe(isAuth => {
-      console.log('Estado de autenticación cambió a:', isAuth);
-    });
+    //this.authService.isAuthenticated$.subscribe(isAuth => {
+    //  console.log('Estado de autenticación cambió a:', isAuth);
+    //});
     
     // Suscribirse a cambios de ruta
     this.router.events.subscribe(event => {
@@ -64,21 +64,36 @@ export class LoginComponent implements OnInit {
         email: this.loginForm.value.email,
         password: this.loginForm.value.password
       };
-
+      
       this.authService.login(credentials).subscribe({
         next: (response) => {
           this.loading = false;
-          if (response.success) {
+          console.log('🔍 RESPUESTA COMPLETA DEL BACKEND:', response);
+          console.log('🔍 response.user:', response.user);
+          console.log('🔍 response.accessToken:', response.token);
+          console.log('🔍 response.token:', response.token);
+          console.log('🔍 Keys de la respuesta:', Object.keys(response));
+          console.log('🔍 Tipo de response.user:', typeof response.user);
+          if (response.success && response.token && response.user) {
             console.log('Login exitoso:', response.user);
             console.log('Respuesta completa:', response);
             // Guardar datos del usuario si es necesario
-            localStorage.setItem('authToken', response.token!);
-            localStorage.setItem('user', response.user!);
-        
+            localStorage.setItem('token', response.token!);
+            localStorage.setItem('refreshToken', response.refreshToken || '');
+            localStorage.setItem('user', JSON.stringify(response.user!));
+            this.authService.updateAuthStatus(true);
+            console.log('----------------------------------------------');
+            this.authService.isAuthenticated$.subscribe(auth => {
+            console.log('🔐 Estado de autenticación después del login:', auth);
+            });
+            console.log('----------------------------------------------');
             console.log('💾 Datos guardados en localStorage');
-            console.log('🔑 Token:', localStorage.getItem('authToken'));
+            console.log('🔑 Token:', localStorage.getItem('token'));
             console.log('👤 User:', localStorage.getItem('user'));
-
+            console.log('Estado de autenticación actualizado');
+            console.log('isAuthenticated$:', this.authService.isAuthenticated$);
+            console.log('----------------------------------------------');
+            console.log('🧭 Navegando a dashboard...');
             this.router.navigate(['/dashboard']);
           } else {
             this.errorMessage = response.message || 'Error en el login';

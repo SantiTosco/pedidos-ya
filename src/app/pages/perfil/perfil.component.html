@@ -32,24 +32,6 @@
         <div class="card-body">
           <form [formGroup]="profileForm" (ngSubmit)="onSubmit()">
             
-            <!-- Nombre -->
-            <div class="mb-3">
-              <label for="name" class="form-label fw-bold">
-                Nombre <span class="text-danger">*</span>
-              </label>
-              <input 
-                type="text" 
-                id="name"
-                class="form-control"
-                formControlName="name"
-                [class.is-invalid]="profileForm.get('name')?.invalid && profileForm.get('name')?.touched">
-              
-              <div *ngIf="profileForm.get('name')?.invalid && profileForm.get('name')?.touched" 
-                   class="invalid-feedback">
-                El nombre es requerido
-              </div>
-            </div>
-
             <!-- Email -->
             <div class="mb-3">
               <label for="email" class="form-label fw-bold">
@@ -71,28 +53,6 @@
                   Ingresa un email válido
                 </span>
               </div>
-            </div>
-
-            <!-- Teléfono -->
-            <div class="mb-3">
-              <label for="phone" class="form-label fw-bold">Teléfono</label>
-              <input 
-                type="tel" 
-                id="phone"
-                class="form-control"
-                formControlName="phone"
-                placeholder="Opcional">
-            </div>
-
-            <!-- Bio -->
-            <div class="mb-3">
-              <label for="bio" class="form-label fw-bold">Biografía</label>
-              <textarea 
-                id="bio"
-                class="form-control"
-                formControlName="bio"
-                rows="3"
-                placeholder="Cuéntanos algo sobre ti..."></textarea>
             </div>
 
             <!-- Contraseña -->

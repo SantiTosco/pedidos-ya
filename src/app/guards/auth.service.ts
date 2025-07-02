@@ -20,6 +20,12 @@ export interface LoginResponse {
 interface BackendLoginResponse {
   accessToken: string;
   refreshToken: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    // agrega otros campos que devuelva tu backend
+  };
 }
 
 @Injectable({
@@ -42,9 +48,8 @@ export class AuthService {
             success: true,
             message: 'Login exitoso',
             token: response.accessToken,
-            refreshToken: response.refreshToken
-            
-            // user: undefined porque tu backend no lo devuelve actualmente
+            refreshToken: response.refreshToken,
+            user: response.user  
           };
         }),
         tap(response => {
@@ -91,30 +96,45 @@ export class AuthService {
     }
   }
    // Método para verificar si hay un token válido
-  private hasValidToken(): boolean {
-    const token = localStorage.getItem('accessToken');
-    if (!token) return false;
-    
-    try {
-      // Opcional: Verificar si el token no ha expirado
-      // const payload = JSON.parse(atob(token.split('.')[1]));
-      // const now = Date.now() / 1000;
-      // return payload.exp > now;
-      
-      return true; // Por ahora solo verificamos que exista
-    } catch {
-      return false;
-    }
+  hasValidToken(): boolean {
+    const token = this.getToken();
+    return !!token && !this.isTokenExpired(token);
+  }
+
+
+  updateAuthStatus(isAuthenticated: boolean): void {
+    this.isAuthenticatedSubject.next(isAuthenticated);
   }
 
   // Método público para verificar autenticación (usado por el guard)
   isAuthenticated(): boolean {
-    return this.isAuthenticatedSubject.value;
-  }
+  const token = localStorage.getItem('authToken'); // ✅ Usar mismo nombre
+  const user = localStorage.getItem('user');
+  return !!(token && user);
+}
 
+  //metodo logout
+  logout(): void {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    this.updateAuthStatus(false);
+  }
+  private isTokenExpired(token: string): boolean {
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      const now = Date.now() / 1000;
+      return payload.exp < now;
+    } catch (error) {
+      return true;
+    }
+  }
   // Método para obtener el token
   getToken(): string | null {
-    return localStorage.getItem('accessToken');
+    return localStorage.getItem('token');
   }
-
+  getCurrentUser(): any {
+    const userStr = localStorage.getItem('user');
+    return userStr ? JSON.parse(userStr) : null;
+  }
 }
