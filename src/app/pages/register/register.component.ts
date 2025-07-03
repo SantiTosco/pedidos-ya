@@ -17,6 +17,7 @@ export class RegisterComponent {
     showConfirmPassword: boolean = false;
     registerForm: FormGroup;
     loading = false;
+    showWelcomeMessage = false;
     errorMessage = '';
 
     constructor(
@@ -62,13 +63,27 @@ export class RegisterComponent {
             password: this.registerForm.value.password
             };
     
-            console.log('📤 Enviando datos:', registerData); // ← Y esto
-            
+            console.log('📤 Enviando datos:', registerData); // ← Y esto            
             this.authService.register(registerData).subscribe({
                 next: (response) => {
-                    console.log('✅ Respuesta recibida:', response); // ← Y esto
-                    this.loading = false;
-                    this.redirectToDashboard();
+                    // Registro exitoso, ahora hacer login automático
+                    const loginData = {
+                    email: this.registerForm.value.email,
+                    password: this.registerForm.value.password
+                    };
+                     this.authService.login(loginData).subscribe({
+                    next: (loginResponse: any) => {
+                    // Guardar token del login
+                    localStorage.setItem('token', loginResponse.token);
+                    localStorage.setItem('user', JSON.stringify(loginResponse.user));
+                    this.showWelcomeMessage = true;
+                    setTimeout(() => {
+                    this.router.navigate(['/dashboard']);
+                              }, 1500);
+                            }
+                         }
+                    )
+                    
                 },
                 error: (error) => {
                     console.log('❌ Error recibido:', error); // ← Y esto
