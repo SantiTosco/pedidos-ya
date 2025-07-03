@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
+import { Pedido } from '../pages/list-order/list-order.component'
+
 
 @Injectable({ providedIn: 'root' })
 export class PedidoService {
@@ -8,7 +10,7 @@ export class PedidoService {
 
   constructor(private http: HttpClient) {}
 
-  getPedidos(): Observable<any> {
-    return this.http.get(this.apiUrl);
+  getPedidos(): Observable<{ items: Pedido[] }> {
+    return this.http.get<{ items: Pedido[] }>(this.apiUrl);
   }
 }

@@ -204,4 +204,17 @@ export class AuthService {
     //Devuelve el usuario si está presente transformandolo en un objeto JSON, o null si no
     return userStr ? JSON.parse(userStr) : null;
   }
+  getUsuarioId(): number | null {
+  const token = this.getToken();
+  if (!token) return null;
+
+  try {
+    const payload = JSON.parse(atob(token.split('.')[1]));
+    console.log('Payload del token:', payload); // 👈 Mostramos todo
+    return payload.sub || payload.id || payload.usuarioId; // aún no sabemos cuál es
+  } catch (error) {
+    console.error('Error al decodificar token:', error);
+    return null;
+  }
+}
 }
