@@ -36,7 +36,7 @@ export class UserService {
   const headers = new HttpHeaders({
     'Authorization': `Bearer ${token}`
   });
-  return this.http.get<User>(`${this.apiUrl}/profile`, { headers }); // ← Cambiar aquí
+  return this.http.get<User>(`${this.apiUrl}/users/profile`, { headers }); // ← Cambiar aquí
   }
   // En usuario.service.ts
 updateProfile(updateData: UpdateUserProfile): Observable<any> { // ⭐ Cambiar de Observable<User> a Observable<any>
