@@ -32,7 +32,7 @@ export class RegisterComponent {
             name: ['', [Validators.required, Validators.minLength(3)]],
             email: ['', {
                 validators: [Validators.required, Validators.email],
-                asyncValidators: [this.verifyEmailValidator(this.authService)],
+                //asyncValidators: [this.verifyEmailValidator(this.authService)],
                 updateOn: 'blur' // Ejecuta la validación cuando se deja el campo
             }],
             password: ['', [Validators.required, Validators.minLength(6)]],
@@ -78,24 +78,38 @@ export class RegisterComponent {
                     email: this.registerForm.value.email,
                     password: this.registerForm.value.password
                     };
-                     this.authService.login(loginData).subscribe({
+                    console.log('🔑 Intentando login automático:', loginData); // ⭐ Agregar este log
+
+                    this.authService.login(loginData).subscribe({
                     next: (loginResponse: any) => {
                     // Guardar token del login
-                    localStorage.setItem('token', loginResponse.token);
-                    localStorage.setItem('user', JSON.stringify(loginResponse.user));
-                    this.showWelcomeMessage = true;
-                    setTimeout(() => {
-                    this.router.navigate(['/dashboard']);
-                              }, 1500);
-                            }
+                         console.log('✅ Login exitoso:', loginResponse); // ⭐ Agregar este log
+                        console.log('🎫 Token recibido:', loginResponse.token); // ⭐ Verificar token
+                        console.log('🔄 RefreshToken recibido:', loginResponse.refreshToken);
+                        // Guardar token del login
+                        localStorage.setItem('token', loginResponse.token);
+                        localStorage.setItem('refreshToken', loginResponse.refreshToken || '');
+                        localStorage.setItem('user', JSON.stringify(loginResponse.user));
+                        console.log('💾 Token guardado en localStorage:', localStorage.getItem('token')); // ⭐ Verificar que se guardó
+        
+                        this.showWelcomeMessage = true;
+                        setTimeout(() => {
+                        this.router.navigate(['/dashboard']);
+                                  }, 1500);
+                                },
+                                
+                error: (loginError) => { // ⭐ ¡Faltaba esto!
+                console.error('❌ Error en login automático:', loginError);
+                 // Si falla el login automático, redirigir a login normal
+                 this.router.navigate(['/login']);
                          }
-                    )
-                    
+                 });
                 },
                 error: (error) => {
                     console.log('❌ Error recibido:', error); // ← Y esto
                     this.loading = false;
                     this.errorMessage = error.message || 'Error de conexión. Intente nuevamente.';
+                    
                 }
             });
 
@@ -113,14 +127,14 @@ export class RegisterComponent {
         });
     }
 
-    verifyEmailValidator(authService: AuthService): AsyncValidatorFn {
-        return (control: AbstractControl) => {
-            if (!control.value) return of(null); // no validar si está vacío
-                return authService.verifyEmail(control.value).then(exists => {
-                return exists ? { emailExists: true } : null;
-            });
-        };
-    }
+    //verifyEmailValidator(authService: AuthService): AsyncValidatorFn {
+    //    return (control: AbstractControl) => {
+    //        if (!control.value) return of(null); // no validar si está vacío
+    //            return authService.verifyEmail(control.value).then(exists => {
+    //            return exists ? { emailExists: true } : null;
+    //        });
+    //    };
+    //}
 }
     
 
