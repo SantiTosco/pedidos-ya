@@ -33,11 +33,10 @@
                 id="email"
                 class="form-control form-control-lg"
                 formControlName="email"
-                placeholder="tu@email.com"
-                [class.is-invalid]="isFieldInvalid('email')">             
-              <div *ngIf="isFieldInvalid('email')" class="invalid-feedback">
-                {{ getFieldError('email') }}
-              </div>
+                placeholder="tu@email.com">
+                @if (loginForm.get('email')?.invalid && loginForm.get('email')?.touched) {
+                  <div class="mensaje-error p-2">Ingrese un email válido.</div>
+                }
             </div>
 
             <!-- Password -->
@@ -52,14 +51,10 @@
                   id="password"
                   class="form-control form-control-lg"
                   formControlName="password"
-                  placeholder="Tu contraseña"
-                  [class.is-invalid]="isFieldInvalid('password')">
-                  <span class="input-group-text" (click)="togglePassword()" style="cursor: pointer;">
-                    <i class="bi {{ showPassword ? 'bi-eye-slash' : 'bi-eye' }}"></i>
-                  </span>
-              </div>
-              <div *ngIf="isFieldInvalid('password')" class="invalid-feedback">
-                {{ getFieldError('password') }}
+                  placeholder="Tu contraseña">
+                  @if (loginForm.get('password')?.invalid && loginForm.get('password')?.touched) {
+                    <div class="mensaje-error p-2">Contraseña es requerida y debe tener al menos 6 caracteres.</div>
+                  }
               </div>
             </div>
 
@@ -82,12 +77,11 @@
           <div class="text-center mt-4">
             <p class="text-muted">
               ¿No tienes cuenta? 
-              <a routerLink="/register" class="text-primary text-decoration-none">
+              <button class="btn-register" (click)="goToRegister()">
                 Regístrate aquí
-              </a>
+              </button>
             </p>
           </div>
-
         </div>
       </div>
 

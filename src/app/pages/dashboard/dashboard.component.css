@@ -75,6 +75,14 @@
   transform: translateY(0);
 }
 
+.login-message-overlay {
+  position: fixed; /* ⭐ Esto hace que "flote" */
+  top: 20px;
+  left: 20px;
+  z-index: 9999;
+  max-width: 350px;
+}
+
 /* ⭐ Animación de entrada más suave */
 @keyframes slideInDown {
   0% {

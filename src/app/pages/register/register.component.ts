@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../guards/auth.service';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -17,16 +18,23 @@ export class RegisterComponent {
     showConfirmPassword: boolean = false;
     registerForm: FormGroup;
     loading = false;
+    showWelcomeMessage = false;
     errorMessage = '';
 
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+
+        
     ) {
         this.registerForm = this.formBuilder.group({
             name: ['', [Validators.required, Validators.minLength(3)]],
-            email: ['', [Validators.required, Validators.email]],
+            email: ['', {
+                validators: [Validators.required, Validators.email],
+                //asyncValidators: [this.verifyEmailValidator(this.authService)],
+                updateOn: 'blur' // Ejecuta la validación cuando se deja el campo
+            }],
             password: ['', [Validators.required, Validators.minLength(6)]],
             confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
         },{
@@ -62,18 +70,46 @@ export class RegisterComponent {
             password: this.registerForm.value.password
             };
     
-            console.log('📤 Enviando datos:', registerData); // ← Y esto
-            
+            console.log('📤 Enviando datos:', registerData); // ← Y esto            
             this.authService.register(registerData).subscribe({
                 next: (response) => {
-                    console.log('✅ Respuesta recibida:', response); // ← Y esto
-                    this.loading = false;
-                    this.redirectToDashboard();
+                    // Registro exitoso, ahora hacer login automático
+                    const loginData = {
+                    email: this.registerForm.value.email,
+                    password: this.registerForm.value.password
+                    };
+                    console.log('🔑 Intentando login automático:', loginData); // ⭐ Agregar este log
+
+                    this.authService.login(loginData).subscribe({
+                    next: (loginResponse: any) => {
+                    // Guardar token del login
+                         console.log('✅ Login exitoso:', loginResponse); // ⭐ Agregar este log
+                        console.log('🎫 Token recibido:', loginResponse.token); // ⭐ Verificar token
+                        console.log('🔄 RefreshToken recibido:', loginResponse.refreshToken);
+                        // Guardar token del login
+                        localStorage.setItem('token', loginResponse.token);
+                        localStorage.setItem('refreshToken', loginResponse.refreshToken || '');
+                        localStorage.setItem('user', JSON.stringify(loginResponse.user));
+                        console.log('💾 Token guardado en localStorage:', localStorage.getItem('token')); // ⭐ Verificar que se guardó
+        
+                        this.showWelcomeMessage = true;
+                        setTimeout(() => {
+                        this.router.navigate(['/dashboard']);
+                                  }, 1500);
+                                },
+                                
+                error: (loginError) => { // ⭐ ¡Faltaba esto!
+                console.error('❌ Error en login automático:', loginError);
+                 // Si falla el login automático, redirigir a login normal
+                 this.router.navigate(['/login']);
+                         }
+                 });
                 },
                 error: (error) => {
                     console.log('❌ Error recibido:', error); // ← Y esto
                     this.loading = false;
                     this.errorMessage = error.message || 'Error de conexión. Intente nuevamente.';
+                    
                 }
             });
 
@@ -89,8 +125,21 @@ export class RegisterComponent {
             control.markAsTouched();
         }
         });
-  }
     }
+
+    verifyEmailValidator(authService: AuthService): AsyncValidatorFn {
+        //Obtiene el mail ingresado en el formulario
+        return (control: AbstractControl): Promise<ValidationErrors | null> => {
+            const email = control.value;
+
+            if (!email) return Promise.resolve(null); // No valida si el campo de mail estávacío
+
+            return authService.findMails().then(mails => {
+            return mails.includes(email) ? { emailExists: true } : null;
+            });
+        };
+    }
+}
     
 
 
