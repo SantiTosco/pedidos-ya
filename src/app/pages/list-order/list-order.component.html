@@ -8,11 +8,14 @@
       </div>-->
       <h2>Mis Pedidos</h2>
         <div class="card shadow p-4 w-100">
-      <div class="pedido-header p-2"></div>
-        <div *ngFor="let pedido of pedidos">
-          <p>ID: {{ pedido?.id }}</p>
-          <p>Estado: {{ pedido?.estado }}</p>
+      <div class="pedido-header p-2">
+        <div *ngFor="let pedido of pedidos" class="pedido-card p-2">
+          <p><strong>ID:</strong> {{ pedido?.id }}</p>
+          <p><strong>Estado:</strong> {{ pedido?.estado }}</p>
+          <p><strong>Domicilio:</strong> {{pedido?.location?.street}} {{pedido?.location?.number}}</p>
+          <hr>
         </div>
+      </div>
     </div>
     </div>
   

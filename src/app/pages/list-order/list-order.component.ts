@@ -2,18 +2,27 @@ import { Component } from '@angular/core';
 import { CommonModule} from '@angular/common';
 import { Location } from '@angular/common';
 import { PedidoService } from '../../services/pedido.service';
+import {AuthService} from '../../guards/auth.service'
 import {HttpClient} from '@angular/common/http';
 import {OnInit} from '@angular/core';
-interface Pedido {
-  tipo: 'Comida' | 'Bebida';
-  estado: 'Entregado' | 'Cancelado';
-  nombre: string;
-  imagen: string;
-  precio: number;
-  fecha: string;
-  productos: number;
-  id: string;
+export interface Pedido {
+  id: number;
+  estado: string;
+  restauranteId: number;
+  deliveryId: number | null;
+  productos: number[];
+  location: {
+    cityId: number;
+    number: string;
+    street: string;
+    location: {
+      lat: number;
+      lng: number;
+    };
+  };
+  usuarioId: number;
 }
+
 
 @Component({
   selector: 'app-list-order',
@@ -26,22 +35,36 @@ export class ListOrderComponent implements OnInit{
   
   pedidos: Pedido[] = [];
 
-  constructor(private pedidoService: PedidoService) {
+  constructor(
+    private pedidoService: PedidoService,
+  ) {
   }
 
   ngOnInit(): void {
-  this.pedidoService.getPedidos().subscribe({
-      next: (data) => {
-      // data tiene la estructura completa con items, meta, links
-      this.pedidos = data.items.map((item: any) => ({
-        id: item.id,
-        estado: item.estado
-      }));
+    //Obtiene el usuario del localStorage
+    const userStr = localStorage.getItem('user');
+    // Si no hay usuario, no se puede continuar
+    const user = userStr ? JSON.parse(userStr) : null;
+    const usuarioId = user?.id;
+    // Si no se pudo obtener el ID del usuario, muestra un error
+    if (usuarioId === null || usuarioId === undefined) {
+      console.error('No se pudo obtener el ID del usuario desde el token');
+      return;
+    }
+    // Carga los pedidos del service
+    this.pedidoService.getPedidos().subscribe({
+    next: (data) => {
+      //filtra los pedidos por id del usuario
+      this.pedidos = data.items.filter((p: Pedido) => p.usuarioId === usuarioId);
     },
-    error: (err) => console.error(err)
-  });
+    error: (err) => {
+      //Muestra error si no se pudieron cargar los pedidos
+    console.error('Error al cargar pedidos:', err);
+    }
+    
+});
 }
-}
+
  /*constructor(private location: Location) {}
   goBack() {
     this.location.back();
@@ -84,4 +107,4 @@ export class ListOrderComponent implements OnInit{
     }
   ];
 }
-*/
+*/}
