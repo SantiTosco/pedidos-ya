@@ -19,12 +19,11 @@ export const authGuard: CanActivateFn = (route, state) => {
 
 // Función auxiliar para verificar autenticación
 function checkAuthStatus(): boolean {
-  // Aquí puedes implementar tu lógica de verificación
-  // Por ejemplo, verificar si existe un token en localStorage
-  const token = localStorage.getItem('token');
-  const user = localStorage.getItem('user');
+  //verifica si el usuario está autenticado
+  const token = localStorage.getItem('token'); //obtiene el token
+  const user = localStorage.getItem('user'); //obtiene el usuario
   
-  return !!(token && user);
+  return !!(token && user); //devuelve true si el token y el usuario están presentes
 }
 
 // Guard para evitar que usuarios autenticados accedan al login

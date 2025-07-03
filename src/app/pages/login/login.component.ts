@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   loading = false;
   errorMessage = '';
+  showPassword: boolean = false;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -27,6 +28,10 @@ export class LoginComponent implements OnInit {
       password: ['', [Validators.required, Validators.minLength(6)]]
     });
   }
+
+  togglePassword(){
+        this.showPassword = !this.showPassword;
+    }
 
   ngOnInit() {
     // 🔍 DEBUG: Ver estado inicial

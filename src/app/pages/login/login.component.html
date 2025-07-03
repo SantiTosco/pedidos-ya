@@ -4,7 +4,7 @@
       
       <!-- Card de Login -->
       <div class="card shadow-lg border-0">
-        <div class="card-header bg-primary text-white text-center py-4">
+        <div class="card-header login text-white text-center py-4">
           <h3 class="mb-0">
             <i class="fas fa-sign-in-alt me-2"></i>
             Iniciar Sesión
@@ -24,9 +24,9 @@
             
             <!-- Email -->
             <div class="mb-3">
-              <label for="email" class="form-label fw-bold">
+              <label for="email" class="form-label ">
                 <i class="fas fa-envelope me-1"></i>
-                Email
+                EMAIL
               </label>
               <input 
                 type="email" 
@@ -34,8 +34,7 @@
                 class="form-control form-control-lg"
                 formControlName="email"
                 placeholder="tu@email.com"
-                [class.is-invalid]="isFieldInvalid('email')">
-              
+                [class.is-invalid]="isFieldInvalid('email')">             
               <div *ngIf="isFieldInvalid('email')" class="invalid-feedback">
                 {{ getFieldError('email') }}
               </div>
@@ -43,18 +42,22 @@
 
             <!-- Password -->
             <div class="mb-4">
-              <label for="password" class="form-label fw-bold">
+              <label for="password" class="form-label">
                 <i class="fas fa-lock me-1"></i>
-                Contraseña
+                CONTRASEÑA
               </label>
-              <input 
-                type="password" 
-                id="password"
-                class="form-control form-control-lg"
-                formControlName="password"
-                placeholder="Tu contraseña"
-                [class.is-invalid]="isFieldInvalid('password')">
-              
+              <div class="input-group">
+                <input 
+                  [type]="showPassword ? 'text' : 'password'"
+                  id="password"
+                  class="form-control form-control-lg"
+                  formControlName="password"
+                  placeholder="Tu contraseña"
+                  [class.is-invalid]="isFieldInvalid('password')">
+                  <span class="input-group-text" (click)="togglePassword()" style="cursor: pointer;">
+                    <i class="bi {{ showPassword ? 'bi-eye-slash' : 'bi-eye' }}"></i>
+                  </span>
+              </div>
               <div *ngIf="isFieldInvalid('password')" class="invalid-feedback">
                 {{ getFieldError('password') }}
               </div>
@@ -88,7 +91,7 @@
         </div>
       </div>
 
-      <!-- Info de prueba (SOLO PARA DESARROLLO) -->
+      <!-- Info de prueba (SOLO PARA DESARROLLO) 
       <div class="card mt-3 border-warning">
         <div class="card-body bg-light">
           <h6 class="card-title text-warning">
@@ -99,7 +102,7 @@
             Usa el email y contraseña del usuario que creaste en la base de datos
           </small>
         </div>
-      </div>
+      </div> -->
 
     </div>
   </div>

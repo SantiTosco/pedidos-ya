@@ -40,10 +40,10 @@ export class PerfilComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService
   ) {
-    // ✅ FormGroup simplificado - solo email y password
+    // ✅ FormGroup con validaciones de contraseña mínima 6 caracteres
     this.profileForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
-      password: ['']  // Opcional para cambiar contraseña
+      password: ['', [Validators.minLength(6)]]  // Mínimo 6 caracteres
     });
   }
 
@@ -102,13 +102,13 @@ export class PerfilComponent implements OnInit {
       console.warn('⚠️ No se puede llenar el formulario: usuario inválido', user);
       return;
     }
-
+  
     this.profileForm.patchValue({
       email: user.email,
       password: '' // Siempre vacío por seguridad
     });
   }
-
+  
   onSubmit(): void {
     if (this.profileForm.valid && this.user) {
       this.loading = true;
@@ -117,39 +117,79 @@ export class PerfilComponent implements OnInit {
       const updateData: UpdateUserProfile = {};
 
       // ✅ Solo comparar email y password
-      if (formData.email !== this.user.email) updateData.email = formData.email;
-      if (formData.password && formData.password.trim() !== '') {
-        updateData.password = formData.password;
+      if (formData.email !== this.user.email) {
+        // ✅ Validar que el email no exista en la DB
+        this.userService.checkEmailExists(formData.email, this.user.id).subscribe({
+          next: (emailExists) => {
+            if (emailExists) {
+              this.showMessage('Este email ya está registrado', 'error');
+              this.loading = false;
+              return;
+            }
+            
+            updateData.email = formData.email;
+            this.proceedWithUpdate(updateData, formData);
+          },
+          error: (error) => {
+            console.error('Error checking email:', error);
+            this.showMessage('Error al validar el email', 'error');
+            this.loading = false;
+          }
+        });
+      } else {
+        this.proceedWithUpdate(updateData, formData);
       }
-
-      if (Object.keys(updateData).length === 0) {
-        this.showMessage('No hay cambios para guardar', 'error');
-        this.loading = false;
-        return;
-      }
-
-      this.userService.updateProfile(updateData).subscribe({
-        next: (updatedUser: User) => {
-          this.user = updatedUser;
-          this.populateForm(updatedUser); // ✅ Actualizar formulario con nuevos datos
-          this.showMessage('Perfil actualizado correctamente', 'success');
-          
-          // ✅ Limpiar solo la contraseña
-          this.profileForm.patchValue({ password: '' });
-          this.loading = false;
-        },
-        error: (error) => {
-          console.error('Error updating profile:', error);
-          this.showMessage('Error al actualizar el perfil', 'error');
-          this.loading = false;
-        }
-      });
     } else {
       // ✅ Marcar todos los campos como touched para mostrar errores
       this.profileForm.markAllAsTouched();
       this.showMessage('Por favor completa todos los campos requeridos', 'error');
     }
   }
+
+  private proceedWithUpdate(updateData: UpdateUserProfile, formData: any): void {
+  if (formData.password && formData.password.trim() !== '') {
+    updateData.password = formData.password;
+  }
+
+  if (Object.keys(updateData).length === 0) {
+    this.showMessage('No hay cambios para guardar', 'error');
+    this.loading = false;
+    return;
+  }
+
+  this.userService.updateProfile(updateData).subscribe({
+    next: (response: any) => { // ⭐ Cambiar de 'updatedUser: User' a 'response: any'
+      console.log('Respuesta del servidor:', response);
+      
+      // ⭐ NUEVO: Verificar si viene un nuevo token (cambio de email)
+      if (response.access_token) {
+        // Actualizar el token en localStorage
+        localStorage.setItem('token', response.access_token);
+        console.log('🔄 Token actualizado por cambio de email');
+        
+        // Actualizar los datos del usuario con el objeto user de la respuesta
+        this.user = response.user;
+        this.populateForm(response.user);
+        
+        this.showMessage(response.message || 'Email actualizado correctamente. Token renovado.', 'success');
+      } else {
+        // Es una actualización normal (sin cambio de email)
+        this.user = response; // response es directamente el User
+        this.populateForm(response);
+        this.showMessage('Perfil actualizado correctamente', 'success');
+      }
+      
+      // ✅ Limpiar solo la contraseña
+      this.profileForm.patchValue({ password: '' });
+      this.loading = false;
+    },
+    error: (error) => {
+      console.error('Error updating profile:', error);
+      this.showMessage('Error al actualizar el perfil', 'error');
+      this.loading = false;
+    }
+  });
+}
 
   private showMessage(text: string, type: 'success' | 'error'): void {
     this.message = text;

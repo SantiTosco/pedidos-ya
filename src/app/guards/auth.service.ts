@@ -2,6 +2,7 @@ import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { catchError, map, tap} from 'rxjs/operators';
+import axios from 'axios';
 
 export interface LoginRequest {
   email: string;
@@ -16,7 +17,6 @@ export interface LoginResponse {
   refreshToken?: string;
 }
 
-// Interface para lo que realmente devuelve tu backend
 interface BackendLoginResponse {
   accessToken: string;
   refreshToken: string;
@@ -24,14 +24,27 @@ interface BackendLoginResponse {
     id: string;
     email: string;
     name: string;
-    // agrega otros campos que devuelva tu backend
   };
+}
+
+interface RegisterRequest {
+  email: string;
+  password: string;
+}
+
+interface RegisterResponse {
+  success: boolean;
+  message: string;
+  accessToken?: string;
+  refreshToken?: string;
+  user?: any;
 }
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
+
   private apiUrl = 'http://localhost:3001';
   private http = inject(HttpClient);
 
@@ -42,8 +55,7 @@ export class AuthService {
     return this.http.post<BackendLoginResponse>(`${this.apiUrl}/users/login`, credentials)
       .pipe(
         map(response => {
-          // Adaptamos la respuesta del backend al formato que espera el frontend
-          
+          // Adapta la respuesta del backend al formato que espera el frontend
           return {
             success: true,
             message: 'Login exitoso',
@@ -53,9 +65,10 @@ export class AuthService {
           };
         }),
         tap(response => {
-          // 🎯 AQUÍ ES LA CLAVE: Guardamos los tokens y actualizamos el estado
+          //Guardamos los tokens y actualizamos el estado
           if (response.success && response.token) {
             this.setTokens(response.token, response.refreshToken);
+            this.setUser(response.user);
             this.isAuthenticatedSubject.next(true);
             console.log('Usuario autenticado correctamente');
             
@@ -65,6 +78,40 @@ export class AuthService {
       );
 
   }
+
+  register(user: RegisterRequest): Observable<RegisterResponse> {
+    console.log('🚀 AuthService.register() llamado con:', user);
+
+    return this.http.post<any>(`${this.apiUrl}/users/register`, user)
+    .pipe(
+      tap(rawResponse => {
+        console.log('🔍 RESPUESTA CRUDA del backend:', rawResponse); 
+      }),
+      map(response =>{
+        console.log('🔄 map() ejecutado, response:', response);
+        console.log("Usuario:", response.user);
+        return {
+          success: true,
+          message: 'Usuario registrado correctamente',
+          token: response.accessToken,
+          refreshToken: response.refreshToken,
+          user: response.user
+        };
+      }),
+      tap(response => {
+        console.log('👀 tap() ejecutado, response:', response);
+        //Guardamos los tokens y actualizamos el estado
+        if (response.success && response.token) {
+          this.setTokens(response.token, response.refreshToken);
+          this.setUser(response.user);
+          this.isAuthenticatedSubject.next(true);
+          console.log('Usuario autenticado correctamente');
+        }
+      }),
+      catchError(this.handleError)
+    );
+  }
+
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido';
     
@@ -94,47 +141,67 @@ export class AuthService {
     if (refreshToken) {
       localStorage.setItem('refreshToken', refreshToken);
     }
+    console.log('Token guardado:', localStorage.getItem('accessToken'));
   }
+
+  private setUser(user: any): void {
+    localStorage.setItem('user', JSON.stringify(user));
+  }
+
    // Método para verificar si hay un token válido
   hasValidToken(): boolean {
     const token = this.getToken();
     return !!token && !this.isTokenExpired(token);
   }
 
-
+  // Método para actualizar el estado de autenticación
   updateAuthStatus(isAuthenticated: boolean): void {
     this.isAuthenticatedSubject.next(isAuthenticated);
   }
 
   // Método público para verificar autenticación (usado por el guard)
   isAuthenticated(): boolean {
-  const token = localStorage.getItem('authToken'); // ✅ Usar mismo nombre
+  const token = localStorage.getItem('authToken'); 
   const user = localStorage.getItem('user');
   return !!(token && user);
 }
 
   //metodo logout
   logout(): void {
-    localStorage.removeItem('token');
-    localStorage.removeItem('refreshToken');
-    localStorage.removeItem('user');
+    //Elimina los tokens y el usuario del localStorage
+    localStorage.removeItem('token'); //Elimina el token
+    localStorage.removeItem('refreshToken'); //Elimina el token de refresco
+    localStorage.removeItem('user'); //Elimina el usuario
+    //Actualiza el estado de autenticación
     this.updateAuthStatus(false);
   }
+
+  // Método para validar si el token ha expirado
   private isTokenExpired(token: string): boolean {
     try {
+      //Obtiene el payload del token
       const payload = JSON.parse(atob(token.split('.')[1]));
+      //Obtiene la fecha actual, en milisegundos
       const now = Date.now() / 1000;
+      //Devuelve si la fecha actual es anterior a la fecha de expiración
       return payload.exp < now;
     } catch (error) {
+      //Si el token no es válido, devuelve true (expirado)
       return true;
     }
   }
-  // Método para obtener el token
+
+  // Método para obtener el token de la sesión
   getToken(): string | null {
+    //Recupera el token del localStorage
     return localStorage.getItem('token');
   }
+
+  // Método para obtener el usuario actual
   getCurrentUser(): any {
+    //Recupera el usuario del localStorage
     const userStr = localStorage.getItem('user');
+    //Devuelve el usuario si está presente transformandolo en un objeto JSON, o null si no
     return userStr ? JSON.parse(userStr) : null;
   }
   getUsuarioId(): number | null {
