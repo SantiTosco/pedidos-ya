@@ -60,6 +60,14 @@ export class LoginComponent implements OnInit {
   }
   
 
+  private redirectToDashboard(): void {
+    this.router.navigate(['/dashboard']);
+  }
+
+  goToRegister(): void {
+    this.router.navigate(['/register']);
+  }
+
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.loading = true;
@@ -100,7 +108,7 @@ export class LoginComponent implements OnInit {
             console.log('isAuthenticated$:', this.authService.isAuthenticated$);
             console.log('----------------------------------------------');
             console.log('🧭 Navegando a dashboard...');
-            this.router.navigate(['/dashboard']);
+            this.redirectToDashboard();
           } else {
             this.errorMessage = response.message || 'Error en el login';
           }
@@ -114,37 +122,6 @@ export class LoginComponent implements OnInit {
     } else {
       this.markFormGroupTouched();
     }
-  }
-
-  isFieldInvalid(fieldName: string): boolean {
-    const field = this.loginForm.get(fieldName);
-    return !!(field && field.invalid && (field.dirty || field.touched));
-  }
-
-  getFieldError(fieldName: string): string {
-    const field = this.loginForm.get(fieldName);
-    
-    if (field && field.errors && (field.dirty || field.touched)) {
-      if (field.errors['required']) {
-        return `${this.getFieldLabel(fieldName)} es requerido`;
-      }
-      if (field.errors['email']) {
-        return 'Ingrese un email válido';
-      }
-      if (field.errors['minlength']) {
-        return `${this.getFieldLabel(fieldName)} debe tener al menos ${field.errors['minlength'].requiredLength} caracteres`;
-      }
-    }
-    
-    return '';
-  }
-
-  private getFieldLabel(fieldName: string): string {
-    const labels: { [key: string]: string } = {
-      email: 'Email',
-      password: 'Contraseña'
-    };
-    return labels[fieldName] || fieldName;
   }
 
   private markFormGroupTouched(): void {
