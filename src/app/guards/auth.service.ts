@@ -1,6 +1,6 @@
 import { Injectable, inject } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { Observable, throwError, BehaviorSubject, firstValueFrom } from 'rxjs';
 import { catchError, map, tap} from 'rxjs/operators';
 import axios from 'axios';
 
@@ -208,13 +208,19 @@ export class AuthService {
   const token = this.getToken();
   if (!token) return null;
 
-  try {
-    const payload = JSON.parse(atob(token.split('.')[1]));
-    console.log('Payload del token:', payload); // 👈 Mostramos todo
-    return payload.sub || payload.id || payload.usuarioId; // aún no sabemos cuál es
-  } catch (error) {
-    console.error('Error al decodificar token:', error);
-    return null;
+    try {
+      const payload = JSON.parse(atob(token.split('.')[1]));
+      console.log('Payload del token:', payload); // 👈 Mostramos todo
+      return payload.sub || payload.id || payload.usuarioId; // aún no sabemos cuál es
+    } catch (error) {
+      console.error('Error al decodificar token:', error);
+      return null;
+    }
   }
-}
+
+  async verifyEmail(mail: string): Promise<boolean> {
+    const users: any[] = await firstValueFrom(this.http.get<any[]>(`${this.apiUrl}/users`));
+    const mails = users.map(user => user.email);
+    return mails.includes(mail);
+  }
 }

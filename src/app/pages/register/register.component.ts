@@ -1,8 +1,9 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, AsyncValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../guards/auth.service';
+import { of } from 'rxjs';
 
 
 @Component({
@@ -22,11 +23,17 @@ export class RegisterComponent {
     constructor(
         private formBuilder: FormBuilder,
         private router: Router,
-        private authService: AuthService
+        private authService: AuthService,
+
+        
     ) {
         this.registerForm = this.formBuilder.group({
             name: ['', [Validators.required, Validators.minLength(3)]],
-            email: ['', [Validators.required, Validators.email]],
+            email: ['', {
+                validators: [Validators.required, Validators.email],
+                asyncValidators: [this.verifyEmailValidator(this.authService)],
+                updateOn: 'blur' // Ejecuta la validación cuando se deja el campo
+            }],
             password: ['', [Validators.required, Validators.minLength(6)]],
             confirmPassword: ['', [Validators.required, Validators.minLength(6)]]
         },{
@@ -89,8 +96,17 @@ export class RegisterComponent {
             control.markAsTouched();
         }
         });
-  }
     }
+
+    verifyEmailValidator(authService: AuthService): AsyncValidatorFn {
+        return (control: AbstractControl) => {
+            if (!control.value) return of(null); // no validar si está vacío
+                return authService.verifyEmail(control.value).then(exists => {
+                return exists ? { emailExists: true } : null;
+            });
+        };
+    }
+}
     
 
 

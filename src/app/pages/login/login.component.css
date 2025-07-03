@@ -7,6 +7,13 @@
   background-color: #1e1e2e;
 }
 
+.mensaje-error {
+  background-color: rgb(247, 109, 109);
+  color : white;
+  border-radius: 5px;
+  font-size: 15px;
+}
+
 .form-control { 
   height: 50px;
   font-size: 15px;
@@ -29,6 +36,15 @@
 
 .btn-primary:hover {
     background-color: #FF7F00;
+}
+
+.btn-register {
+  color: #FF8C00;
+  border: none;
+}
+
+.btn-register:hover{
+  font-size: 16.5px;
 }
 
 .bi-google:hover {

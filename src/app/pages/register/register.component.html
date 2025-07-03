@@ -33,6 +33,9 @@
           @if ( registerForm.get('email')?.invalid && registerForm.get('email')?.touched) {
             <div class="mensaje-error p-2">Ingrese un email válido.</div>
           }
+          @if (registerForm.get('email')?.errors?.['emailExists']) {
+            <div class="mensaje-error p-2">Este email ya está registrado.</div>
+          }
         </div>
 
         <!--CAMPO CONTRASEÑA-->
