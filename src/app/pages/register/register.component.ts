@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, AsyncValidatorFn } from '@angular/forms';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule, AbstractControl, AsyncValidatorFn, ValidationErrors } from '@angular/forms';
 import { Router } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { AuthService } from '../../guards/auth.service';
@@ -114,10 +114,14 @@ export class RegisterComponent {
     }
 
     verifyEmailValidator(authService: AuthService): AsyncValidatorFn {
-        return (control: AbstractControl) => {
-            if (!control.value) return of(null); // no validar si está vacío
-                return authService.verifyEmail(control.value).then(exists => {
-                return exists ? { emailExists: true } : null;
+        //Obtiene el mail ingresado en el formulario
+        return (control: AbstractControl): Promise<ValidationErrors | null> => {
+            const email = control.value;
+
+            if (!email) return Promise.resolve(null); // No valida si el campo de mail estávacío
+
+            return authService.findMails().then(mails => {
+            return mails.includes(email) ? { emailExists: true } : null;
             });
         };
     }
