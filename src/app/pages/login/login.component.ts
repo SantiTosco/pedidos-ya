@@ -86,6 +86,7 @@ export class LoginComponent implements OnInit {
             localStorage.setItem('token', response.token!);
             localStorage.setItem('refreshToken', response.refreshToken || '');
             localStorage.setItem('user', JSON.stringify(response.user!));
+            localStorage.setItem('justLoggedIn', 'true');
             this.authService.updateAuthStatus(true);
             console.log('----------------------------------------------');
             this.authService.isAuthenticated$.subscribe(auth => {

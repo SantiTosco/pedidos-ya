@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
  items: Array<{ image: string; name: string; description: string }> = [];
  user: User | null = null;
 showLogoutMessage: boolean = false;
+showLoginMessage: boolean = true;
 
   constructor(
     private readonly apiService: ApiService,
@@ -64,6 +65,13 @@ showLogoutMessage: boolean = false;
   }
 
   ngOnInit(): void {
+    const justLoggedIn = localStorage.getItem('justLoggedIn');
+    this.initialization();
+    if (justLoggedIn === 'true') {
+      this.showLoginMessage = true;
+       // Limpiar la marca
+      localStorage.removeItem('justLoggedIn');
+
     setTimeout(() => {
       this.mostrarFade = true;
     }, 10);
@@ -76,9 +84,8 @@ showLogoutMessage: boolean = false;
       }, 500); // coincide con la duración del CSS
     }, 3000);
     
-    this.initialization();
+    }
   }
-
   async initialization(): Promise<void> {
     try {
       this.globalStatusService.setLoading(true);
