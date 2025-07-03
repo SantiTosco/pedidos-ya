@@ -171,7 +171,7 @@ export class PerfilComponent implements OnInit {
         this.user = response.user;
         this.populateForm(response.user);
         
-        this.showMessage(response.message || 'Email actualizado correctamente. Token renovado.', 'success');
+        this.showMessage(response.message || 'Email actualizado correctamente.', 'success');
       } else {
         // Es una actualización normal (sin cambio de email)
         this.user = response; // response es directamente el User
