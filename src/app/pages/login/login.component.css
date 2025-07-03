@@ -3,13 +3,9 @@
   max-width: 400px;
 }
 
-.text-start {
-  background-color: #1E1E2E;
-  border-radius: 7px;
-  color: white;
-  max-width: 400px;
+.login {
+  background-color: #1e1e2e;
 }
-
 
 .form-control { 
   height: 50px;

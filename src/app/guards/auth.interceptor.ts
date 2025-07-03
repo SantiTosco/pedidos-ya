@@ -9,6 +9,8 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   
   // Obtener el token de autenticación
   const authToken = localStorage.getItem('token');
+
+  console.log('Interceptor - Token encontrado:', authToken);
   
   // Clonar la request y agregar headers de autenticación si existe token
   let authReq = req;

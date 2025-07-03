@@ -18,7 +18,7 @@ export interface UpdateUserProfile {
   providedIn: 'root'
 })
 export class UserService {
-  private apiUrl = 'http://localhost:3001'; // Ajusta la URL según tu backend
+  private apiUrl = 'http://localhost:3001'; // URL del backend
 
   constructor(private http: HttpClient) {}
   private getAuthHeaders(): HttpHeaders {

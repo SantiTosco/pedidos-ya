@@ -5,28 +5,28 @@
 
 /* Botón de iniciar sesión (outline) */
 .btn-outline-primary {
-  color: #0d6efd;
-  border-color: #0d6efd;
+  color: #FF8C00;
+  border-color: #FF8C00;
   background-color: transparent;
 }
 
 .btn-outline-primary:hover {
-  background-color: #0d6efd;
+  background-color: #FF8C00;
   color: #fff;
-  box-shadow: 0 0.3rem 0.8rem rgba(13, 110, 253, 0.25);
+  box-shadow: 0 0.2rem 0.5rem rgba(255, 140, 0, 0.918);
 }
 
 /* Botón de registrarse (lleno) */
 .btn-primary {
-  background-color: #0d6efd;
-  border-color: #0d6efd;
+  background-color: #FF8C00;
+  border-color: #FF8C00;
   color: #fff;
 }
 
 .btn-primary:hover {
-  background-color: #0b5ed7;
-  border-color: #0a58ca;
-  box-shadow: 0 0.3rem 0.8rem rgba(13, 110, 253, 0.4);
+  background-color: #FF8C00;
+  border-color: #FF8C00;
+  box-shadow: 0 0.2rem 0.5rem rgba(255, 140, 0, 0.918);
 }
 
 .btn-orange {
@@ -37,6 +37,6 @@
 
 .btn-orange:hover {
   background-color: #FF7F00;
-  color: #fff;
+  color: #ffff;
   box-shadow: 0 0.3rem 0.8rem rgb(255, 102, 0);
 }
