@@ -58,3 +58,39 @@
 .alert.fade.show {
   opacity: 1;
 }
+.logout-message {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 9999;
+  opacity: 0;
+  transform: translateY(-20px);
+  /* ⭐ Transición más lenta y suave */
+  transition: all 0.8s ease-in-out;
+  max-width: 300px;
+}
+
+.logout-message.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ⭐ Animación de entrada más suave */
+@keyframes slideInDown {
+  0% {
+    opacity: 0;
+    transform: translateY(-30px);
+  }
+  50% {
+    opacity: 0.5;
+    transform: translateY(-10px);
+  }
+  100% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.logout-message.show {
+  animation: slideInDown 0.8s ease-out;
+}

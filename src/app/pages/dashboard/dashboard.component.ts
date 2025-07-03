@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ApiService } from '../../services/api.service';
 import { GlobalStatusService } from '../../services/global-status.service';
+import { User } from '../../services/usuario.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +16,8 @@ export class DashboardComponent implements OnInit {
  mostrarMensaje = true;
  mostrarFade = false;
  items: Array<{ image: string; name: string; description: string }> = [];
+ user: User | null = null;
+showLogoutMessage: boolean = false;
 
   constructor(
     private readonly apiService: ApiService,
@@ -28,6 +31,36 @@ export class DashboardComponent implements OnInit {
 
   goToProfile(): void {
     this.router.navigate(['/perfil']); // ✅ nueva función para navegar al perfil
+  }
+  logOut(): void {
+    const confirmLogout = confirm('¿Estás seguro de que querés cerrar sesión?');
+
+    if (confirmLogout){
+  // Limpiar todos los datos de sesión
+
+    localStorage.removeItem('token');
+    localStorage.removeItem('user');
+    localStorage.removeItem('refreshToken'); // Si usás refresh token
+  
+  // También limpiar sessionStorage por si acaso
+    sessionStorage.clear();
+  
+  // Resetear variables del componente
+    this.user = null;
+  
+  // ⭐ Mostrar mensaje
+      this.showLogoutMessage = true;
+      
+      // ⭐ Ocultar mensaje después de 3 segundos y redirigir
+      setTimeout(() => {
+      this.showLogoutMessage = false;
+      
+      // ⭐ Esperar más tiempo para que el fade sea más visible
+      setTimeout(() => {
+        this.router.navigate(['']);
+      }, 800); // 800ms para que termine el fade lento
+    }, 4000); // 4 segundos mostrando el mensaje
+    }
   }
 
   ngOnInit(): void {

@@ -20,9 +20,15 @@
           <li><a class="dropdown-item">Mis Direcciones</a></li>
           <li><a class="dropdown-item">Ayuda en Línea</a></li>
           <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item text-danger">Cerrar Sesión</a></li>
+          <li><a class="dropdown-item text-danger"  (click)="logOut()">Cerrar Sesión</a></li>
       </ul>
-    </div>  
+    </div> 
+<div class="logout-message" [class.show]="showLogoutMessage" *ngIf="showLogoutMessage">
+  <div class="alert alert-success d-flex align-items-center">
+    <i class="bi bi-check-circle-fill me-2"></i>
+    <strong>¡Sesión cerrada correctamente! Cargando...</strong>
+  </div>
+</div> 
 <div class="container py-5">
   <div class="d-flex align-items-center mb-4">
     <div>
