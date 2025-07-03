@@ -1,48 +1,47 @@
 <div class="container mt-5" >
-  <div class="container d-flex flex-column justify-content-center align-items-center">
+  <div class="container d-flex flex-column justify-content-center align-items-center py-3">
     <div class="text-start shadow p-4 w-100">
-      <!--<div class="d-flex align-items-center mb-2">
-        <button (click)="goBack()" class="btn btn-link p-0 me-2" title="Volver">
-        </button>
-        <p class="mb-0">Volver</p>
-      </div>-->
-      <h2>Mis Pedidos</h2>
-        <div class="card shadow p-4 w-100">
-      <div class="pedido-header p-2">
-        <div *ngFor="let pedido of pedidos" class="pedido-card p-2">
-          <p><strong>ID:</strong> {{ pedido?.id }}</p>
-          <p><strong>Estado:</strong> {{ pedido?.estado }}</p>
-          <p><strong>Domicilio:</strong> {{pedido?.location?.street}} {{pedido?.location?.number}}</p>
-          <hr>
-        </div>
+      <div class="d-flex align-items-center mb-2">
+        <button (click)="goBack()" class="btn btn-volver">
+        <p class="mb-0">
+          <i class="bi bi-arrow-left"></i> Volver
+        </p>
+         </button>
       </div>
-    </div>
-    </div>
-  
 
-     <!-- @for (pedido of pedidos; track $index) {
-        <div class="pedido-header p-2">
-          <span>{{ pedido.tipo }}</span>
-          <span [class.entregado]="pedido.estado === 'Entregado'"
-                [class.cancelado]="pedido.estado === 'Cancelado'">
-            {{ pedido.estado }}
-          </span>
-        </div>
-        <div class="pedido-body d-flex align-items-center p-4">
-          <img [src]="pedido.imagen" alt="{{pedido.nombre}}" class="logo">
-          <div class="info">
-            <h3>{{ pedido.nombre }}</h3>
-            <h5>${{ pedido.precio.toLocaleString() }}</h5>
-            <h6>{{ pedido.fecha }} · {{ pedido.productos }} Productos</h6>
-            <p>ID: {{ pedido.id }}</p>
-          </div>
-        </div>
+   
 
-        <div class="pedido-footer p-2 mb-2">
-          <button class="opinar">Opinar</button>
-          <button class="repetir">Ver</button>
-        </div>
-      }
+<div class="card shadow p-4 mb-4">
+   <h2 class="mb-4">Mis Pedidos</h2>
+  @for (pedido of pedidos; track pedido.id) {
+    <div class = "card shadow-sm p-3 mb-3 rounded pedido-card">
+      <p><strong>ID:</strong> {{ pedido?.id }}</p>
+       <p>
+      <strong>Estado:</strong>
+      <span [ngClass]="{
+        'text-warning': pedido.estado === 'pending',
+        'text-primary': pedido.estado === 'in_progress',
+        'text-success': pedido.estado === 'delivered'
+      }">
+        {{ getEstadoLabel(pedido.estado) }}
+      </span>
+    </p>
+      <p><strong>Domicilio:</strong> {{ pedido?.location?.street }} {{ pedido?.location?.number }}</p>
     </div>
+  }
+
+   
+
+  <!-- Paginación -->
+  <div class="d-flex justify-content-between align-items-center pt-3">
+    <button class="btn btn-outline-secondary" (click)="prevPage()" [disabled]="currentPage === 1">
+      ← Anterior
+    </button>
+    <span class="fw-semibold">Página {{ currentPage }} de {{ totalPages }}</span>
+    <button class="btn btn-outline-secondary" (click)="nextPage()" [disabled]="currentPage === totalPages">
+      Siguiente →
+    </button>
   </div>
-</div>-->
+</div>
+
+    
