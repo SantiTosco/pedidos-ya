@@ -2,7 +2,7 @@
   <div class="row w-100 justify-content-center">
     <div class="col-md-6 col-lg-4">
       
-      <!-- Card de Login -->
+<!--Login -->
       <div class="card shadow-lg border-0">
         <div class="card-header login text-white text-center py-4">
           <h3 class="mb-0">
@@ -13,16 +13,16 @@
         
         <div class="card-body p-5">
           
-          <!-- Mensaje de Error -->
+<!-- Mensaje de Error -->
           <div *ngIf="errorMessage" class="alert alert-danger" role="alert">
             <i class="fas fa-exclamation-circle me-2"></i>
             {{ errorMessage }}
           </div>
 
-          <!-- Formulario -->
+<!-- Formulario -->
           <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
             
-            <!-- Email -->
+<!-- Email -->
             <div class="mb-3">
               <label for="email" class="form-label ">
                 <i class="fas fa-envelope me-1"></i>
@@ -39,7 +39,7 @@
                 }
             </div>
 
-            <!-- Password -->
+<!-- Contraseña -->
             <div class="mb-4">
               <label for="password" class="form-label">
                 <i class="fas fa-lock me-1"></i>
@@ -58,7 +58,7 @@
               </div>
             </div>
 
-            <!-- Botón Submit -->
+<!-- Botón Submit -->
             <div class="d-grid">
               <button 
                 type="submit" 
@@ -73,7 +73,7 @@
 
           </form>
 
-          <!-- Links adicionales -->
+<!-- Links adicionales -->
           <div class="text-center mt-4">
             <p class="text-muted">
               ¿No tienes cuenta? 
@@ -84,20 +84,6 @@
           </div>
         </div>
       </div>
-
-      <!-- Info de prueba (SOLO PARA DESARROLLO) 
-      <div class="card mt-3 border-warning">
-        <div class="card-body bg-light">
-          <h6 class="card-title text-warning">
-            <i class="fas fa-info-circle me-1"></i>
-            Datos de prueba
-          </h6>
-          <small class="text-muted">
-            Usa el email y contraseña del usuario que creaste en la base de datos
-          </small>
-        </div>
-      </div> -->
-
     </div>
   </div>
 </div>

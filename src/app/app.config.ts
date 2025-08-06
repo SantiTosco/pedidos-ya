@@ -4,10 +4,11 @@ import { provideHttpClient } from '@angular/common/http';
 
 import { routes } from './app.routes';
 
+// Configuración principal de la aplicación Angular
 export const appConfig: ApplicationConfig = {
   providers: [
     provideZoneChangeDetection({ eventCoalescing: true }),
-    provideRouter(routes),
-    provideHttpClient() 
+    provideRouter(routes), // Configuración de rutas
+    provideHttpClient() // Habilita el uso de HttpClient
   ]
 };

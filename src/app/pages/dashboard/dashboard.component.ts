@@ -19,6 +19,7 @@ export class DashboardComponent implements OnInit {
  user: User | null = null;
 showLogoutMessage: boolean = false;
 showLoginMessage: boolean = true;
+showRegisterMessage: boolean = false;
 
   constructor(
     private readonly apiService: ApiService,
@@ -66,12 +67,20 @@ showLoginMessage: boolean = true;
 
   ngOnInit(): void {
     const justLoggedIn = localStorage.getItem('justLoggedIn');
+    const justRegisteredIn = localStorage.getItem('justRegisteredIn');
     this.initialization();
+    if (justRegisteredIn === 'true') {
+      this.showRegisterMessage = true;
+       // Limpiar la marca
+      localStorage.removeItem('justRegisteredIn');
+      setTimeout(() => {
+    this.showRegisterMessage = false;
+     }, 3000);
+    }
     if (justLoggedIn === 'true') {
       this.showLoginMessage = true;
        // Limpiar la marca
       localStorage.removeItem('justLoggedIn');
-
     setTimeout(() => {
       this.mostrarFade = true;
     }, 10);
@@ -85,6 +94,7 @@ showLoginMessage: boolean = true;
     }, 3000);
     
     }
+    
   }
   async initialization(): Promise<void> {
     try {

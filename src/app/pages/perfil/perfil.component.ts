@@ -5,7 +5,7 @@ import { UserService } from '../../services/usuario.service';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../guards/auth.service';
 
-// ✅ Interfaces simplificadas - solo email y password
+// Interfaz de usuario
 interface User {
   id: number;
   email: string;
@@ -40,7 +40,7 @@ export class PerfilComponent implements OnInit {
     private userService: UserService,
     private authService: AuthService
   ) {
-    // ✅ FormGroup con validaciones de contraseña mínima 6 caracteres
+    // Validacion de datos de usuario con contraseña mínima 6 caracteres
     this.profileForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.minLength(6)]]  // Mínimo 6 caracteres
@@ -50,10 +50,10 @@ export class PerfilComponent implements OnInit {
   ngOnInit(): void {
     this.loading = true;
 
-    // Obtener del localStorage como respaldo
+    // Obtener usuario desde el localStorage como respaldo
     const userFromStorage = this.authService.getCurrentUser();
     if (userFromStorage) {
-      console.log('👤 Usuario desde localStorage:', userFromStorage);
+      console.log('Usuario desde localStorage:', userFromStorage);
       this.user = userFromStorage;
       this.populateForm(userFromStorage);
     }
@@ -61,14 +61,14 @@ export class PerfilComponent implements OnInit {
     // Hacer petición al backend para datos actualizados
     this.userService.getProfile().subscribe({
       next: (response) => {
-        console.log('👤 Usuario desde API:', response);
+        console.log('Usuario desde API:', response);
         
-        // ✅ Verificar si la respuesta es válida
+        // Verificar si la respuesta es válida
         if (response && response.email) {
           this.user = response;
           this.populateForm(response);
         } else {
-          console.warn('⚠️ API devolvió datos inválidos, usando localStorage');
+          console.warn('API devolvió datos inválidos, usando localStorage');
           // Si API no devuelve datos válidos, usar localStorage
           if (userFromStorage) {
             this.user = userFromStorage;
@@ -82,7 +82,7 @@ export class PerfilComponent implements OnInit {
       error: (error) => {
         console.error('Error al obtener perfil:', error);
         
-        // ✅ Si hay error en API, usar localStorage como respaldo
+        // Si hay error en API, usar localStorage como respaldo
         if (userFromStorage) {
           console.log('🔄 Usando datos de localStorage como respaldo');
           this.user = userFromStorage;
@@ -96,19 +96,20 @@ export class PerfilComponent implements OnInit {
     });
   }
 
-  // ✅ Método para llenar el formulario - con validación null
+  // Método para llenar el formulario
   private populateForm(user: User | null): void {
     if (!user || !user.email) {
-      console.warn('⚠️ No se puede llenar el formulario: usuario inválido', user);
+      console.warn('No se puede llenar el formulario: usuario inválido', user);
       return;
     }
   
     this.profileForm.patchValue({
       email: user.email,
-      password: '' // Siempre vacío por seguridad
+      password: '' // vacía
     });
   }
   
+  // Envia el formulario del perfil
   onSubmit(): void {
     if (this.profileForm.valid && this.user) {
       this.loading = true;
@@ -116,9 +117,9 @@ export class PerfilComponent implements OnInit {
       const formData = this.profileForm.value;
       const updateData: UpdateUserProfile = {};
 
-      // ✅ Solo comparar email y password
+      // Comparar email y password
       if (formData.email !== this.user.email) {
-        // ✅ Validar que el email no exista en la DB
+        // Validar que el email no exista en la DB
         this.userService.checkEmailExists(formData.email, this.user.id).subscribe({
           next: (emailExists) => {
             if (emailExists) {
@@ -140,28 +141,31 @@ export class PerfilComponent implements OnInit {
         this.proceedWithUpdate(updateData, formData);
       }
     } else {
-      // ✅ Marcar todos los campos como touched para mostrar errores
+      // Marcar todos los campos como touched para mostrar errores
       this.profileForm.markAllAsTouched();
       this.showMessage('Por favor completa todos los campos requeridos', 'error');
     }
   }
 
+  // Verifica si hay cambios en la contraseña y los agrega si es que los hay
   private proceedWithUpdate(updateData: UpdateUserProfile, formData: any): void {
   if (formData.password && formData.password.trim() !== '') {
     updateData.password = formData.password;
   }
 
+  // Error, no hay cambios
   if (Object.keys(updateData).length === 0) {
     this.showMessage('No hay cambios para guardar', 'error');
     this.loading = false;
     return;
   }
 
+  //Llama al servicio userService
   this.userService.updateProfile(updateData).subscribe({
-    next: (response: any) => { // ⭐ Cambiar de 'updatedUser: User' a 'response: any'
+    next: (response: any) => { 
       console.log('Respuesta del servidor:', response);
       
-      // ⭐ NUEVO: Verificar si viene un nuevo token (cambio de email)
+      // Verificar si viene un nuevo token (cambio de email)
       if (response.access_token) {
         // Actualizar el token en localStorage
         localStorage.setItem('token', response.access_token);
@@ -174,15 +178,16 @@ export class PerfilComponent implements OnInit {
         this.showMessage(response.message || 'Email actualizado correctamente.', 'success');
       } else {
         // Es una actualización normal (sin cambio de email)
-        this.user = response; // response es directamente el User
+        this.user = response; 
         this.populateForm(response);
         this.showMessage('Perfil actualizado correctamente', 'success');
       }
       
-      // ✅ Limpiar solo la contraseña
+      // Limpiar solo la contraseña
       this.profileForm.patchValue({ password: '' });
       this.loading = false;
     },
+      // Mensaje para error
     error: (error) => {
       console.error('Error updating profile:', error);
       this.showMessage('Error al actualizar el perfil', 'error');
@@ -191,6 +196,7 @@ export class PerfilComponent implements OnInit {
   });
 }
 
+// Mensaje 
   private showMessage(text: string, type: 'success' | 'error'): void {
     this.message = text;
     this.messageType = type;

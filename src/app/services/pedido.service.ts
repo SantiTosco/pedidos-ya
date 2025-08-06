@@ -10,6 +10,7 @@ export class PedidoService {
 
   constructor(private http: HttpClient) {}
 
+// Obtiene todos los pedidos desde el backend  
   getPedidos(): Observable<{ items: Pedido[] }> {
     return this.http.get<{ items: Pedido[] }>(this.apiUrl);
   }

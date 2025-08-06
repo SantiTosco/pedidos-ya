@@ -21,8 +21,10 @@ export class UserService {
   private apiUrl = 'http://localhost:3001'; // URL del backend
 
   constructor(private http: HttpClient, ) {}
+  
+  // Obtiene los encabezados de autenticación con el token almacenado
   private getAuthHeaders(): HttpHeaders {
-    const token = localStorage.getItem('token'); // O usar this.authService.getToken()
+    const token = localStorage.getItem('token'); 
     console.log('🔍 Token enviado:', token ? 'TOKEN PRESENTE' : 'NO TOKEN');
     
     return new HttpHeaders({
@@ -31,6 +33,7 @@ export class UserService {
     });
   
   }
+  // Obtiene el perfil del usuario autenticado
   getProfile(): Observable<User> {
   const token = localStorage.getItem('token');
   const headers = new HttpHeaders({
@@ -38,7 +41,7 @@ export class UserService {
   });
   return this.http.get<User>(`${this.apiUrl}/users/profile`, { headers }); // ← Cambiar aquí
   }
-  // En usuario.service.ts
+ // Actualiza los datos del perfil del usuario  
 updateProfile(updateData: UpdateUserProfile): Observable<any> { // ⭐ Cambiar de Observable<User> a Observable<any>
   const token = localStorage.getItem('token');
   const headers = new HttpHeaders({
@@ -47,6 +50,8 @@ updateProfile(updateData: UpdateUserProfile): Observable<any> { // ⭐ Cambiar d
     
   return this.http.put<any>(`${this.apiUrl}/users/profile`, updateData, { headers });
 }
+
+// Verifica si un email ya está registrado (excluyendo opcionalmente a un usuario)
   checkEmailExists(email: string, userId?: number): Observable<boolean> {
   const url = userId ? 
     `${this.apiUrl}/check-email/${email}?excludeUserId=${userId}` : 

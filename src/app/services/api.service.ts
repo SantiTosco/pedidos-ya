@@ -9,12 +9,14 @@ import { HttpClient } from '@angular/common/http';
 export class ApiService {
   constructor() {}
 
+  // Obtiene la lista de pedidos desde el backend
   async getData(): Promise<
     Array<{ name: string; description: string; image: string }>
   > {
      return (await axios.get(config.urls.getFood)).data
   }
 
+  // Obtiene los productos que están en el carrito
   async getItemsOnCart(): Promise<
     Array<{ image: string; name: string; price: number; quantity: number }>
     > {
@@ -27,6 +29,7 @@ export class PedidoService {
 
   constructor(private http: HttpClient) {}
 
+  // Obtiene todos los pedidos del backend
   getPedidos() {
     return this.http.get('http://localhost:3000/order');
   }
