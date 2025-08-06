@@ -11,10 +11,15 @@ export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const authToken = localStorage.getItem('token');
 
   console.log('Interceptor - Token encontrado:', authToken);
+
+  let authReq = req;
+
+  //URLs públicas que no necesitan token
+  const publicUrls = ['users/mails'];
+  const isPublic = publicUrls.some(url => req.url.includes(url));
   
   // Clonar la request y agregar headers de autenticación si existe token
-  let authReq = req;
-  if (authToken) {
+  if (authToken && !isPublic) {
     authReq = req.clone({
       headers: req.headers.set('Authorization', `Bearer ${authToken}`)
     });

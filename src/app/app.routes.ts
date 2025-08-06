@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { TemplateComponent } from './pages/template/template.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -45,23 +44,17 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   
-  //Rutas protegidas con template
+
   {
     path: '',
-    component: TemplateComponent,
     canActivate: [authGuard],
     children: [
-      { 
-        path: '', 
-        redirectTo: '', 
-        pathMatch: 'full' 
-      },
       { 
         path: '', 
         component: HomeComponent 
       },
       { 
-        path: 'perfil', 
+        path: 'perfil',   
         component: PerfilComponent 
       },
       { 

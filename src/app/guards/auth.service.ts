@@ -225,10 +225,7 @@ export class AuthService {
     }
   }
 
-  // Verifica si un email ya existe en la base de datos
-  async verifyEmail(mail: string): Promise<boolean> {
-    const users: any[] = await firstValueFrom(this.http.get<any[]>(`${this.apiUrl}/users`));
-    const mails = users.map(user => user.email);
-    return mails.includes(mail);
+  async findMails(): Promise<string[]> {
+    return await firstValueFrom(this.http.get<string[]>(`${this.apiUrl}/users/mails`));
   }
 }
