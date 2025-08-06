@@ -58,11 +58,16 @@ export class ListOrderComponent implements OnInit{
         return;
       }
 
-      this.pedidoService.getPedidos(this.currentPage, this.limit).subscribe({
+     this.pedidoService.getPedidos(1, 100).subscribe({
         next: (data) => {
-          this.pedidos = data.items.filter((p: Pedido) => p.usuarioId === usuarioId);
-          this.totalPages = data.meta.totalPages;
-          this.currentPage = data.meta.currentPage;
+          const pedidosUsuario = data.items.filter((p: Pedido) => p.usuarioId === usuarioId);
+
+          // Paginar en frontend
+          this.totalPages = Math.ceil(pedidosUsuario.length / 4);
+          const inicio = (this.currentPage - 1) * 4;
+          const fin = inicio + 4;
+
+          this.pedidos = pedidosUsuario.slice(inicio, fin);
         },
         error: (err) => {
           console.error('Error al cargar pedidos:', err);
