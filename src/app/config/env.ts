@@ -1,6 +1,6 @@
 export const config = {
   urls: {
-    getFood: 'https://mocki.io/v1/5d6e4c23-205e-48a9-b8d3-8d06dfe2b78e',
-    getCart: 'https://mocki.io/v1/86872b86-63b3-480c-b755-2ed218845074',
+    getFood: 'https://mocki.io/v1/bf62ee8c-ca16-432e-b1a4-6be9d620db4e',
+    getCart: 'https://mocki.io/v1/def365b4-88e6-40a1-bbb1-f281cc6adc21',
   },
 };
