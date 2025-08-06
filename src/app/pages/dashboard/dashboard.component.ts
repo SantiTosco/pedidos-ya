@@ -1,3 +1,4 @@
+// Importaciones necesarias para el componente
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
@@ -6,105 +7,109 @@ import { GlobalStatusService } from '../../services/global-status.service';
 import { User } from '../../services/usuario.service';
 
 @Component({
-  selector: 'app-dashboard',
-  standalone: true,
-  imports: [CommonModule],
+  selector: 'app-dashboard', // Selector usado en la plantilla HTML
+  standalone: true, // El componente es standalone (no requiere NgModule)
+  imports: [CommonModule], // Importa CommonModule para usar directivas como *ngIf, *ngFor
   templateUrl: './dashboard.component.html',
   styleUrl: './dashboard.component.css',
 })
 export class DashboardComponent implements OnInit {
- mostrarMensaje = true;
- mostrarFade = false;
- items: Array<{ image: string; name: string; description: string }> = [];
- user: User | null = null;
-showLogoutMessage: boolean = false;
-showLoginMessage: boolean = true;
-showRegisterMessage: boolean = false;
+ // Variables para mostrar mensajes en pantalla
+  mostrarMensaje = true;
+  mostrarFade = false;
 
+  // Lista de ítems que se mostrarán en cards
+  items: Array<{ image: string; name: string; description: string }> = [];
+
+  // Información del usuario
+  user: User | null = null;
+
+  // Estado de los mensajes de login/logout
+  showLogoutMessage: boolean = false;
+  showLoginMessage: boolean = true;
+
+  // Constructor con inyección de dependencias
   constructor(
     private readonly apiService: ApiService,
     private readonly globalStatusService: GlobalStatusService,
     private readonly router: Router
   ) {}
 
+  // Método de Angular que se ejecuta al inicializar el componente
+  ngOnInit(): void {
+    const justLoggedIn = localStorage.getItem('justLoggedIn'); // Marca temporal para mostrar el mensaje de bienvenida
+
+    this.initialization();
+
+    // Si el usuario acaba de iniciar sesión
+    if (justLoggedIn === 'true') {
+      this.showLoginMessage = true;
+      localStorage.removeItem('justLoggedIn'); // Elimina la marca para no mostrar el mensaje de nuevo
+
+      // Simula el fade del mensaje "Bienvenido"
+      setTimeout(() => {
+        this.mostrarFade = true;
+      }, 10);
+
+      setTimeout(() => {
+        this.mostrarFade = false;
+
+        setTimeout(() => {
+          this.mostrarMensaje = false; // Oculta completamente el mensaje
+        }, 500);
+      }, 3000);
+    }
+    
+  }
+
+  // Método para obtener los datos desde la API
+  async initialization(): Promise<void> {
+    try {
+      this.globalStatusService.setLoading(true); // Muestra spinner o loading global
+      const data = await this.apiService.getData(); // Llama a la API
+      this.items = data; // Guarda los ítems obtenidos
+    } catch (error) {
+      console.error('Error fetching data:', error);
+    } finally {
+      this.globalStatusService.setLoading(false); // Oculta loading
+    }
+  }
+
+  // Navega a la vista de pedidos del usuario
   goToOrders(): void {
     this.router.navigate(['/list-order']);
   }
 
+  // Navega al perfil del usuario
   goToProfile(): void {
-    this.router.navigate(['/perfil']); // ✅ nueva función para navegar al perfil
+    this.router.navigate(['/perfil']);
   }
+
+  // Cierra la sesión del usuario
   logOut(): void {
     const confirmLogout = confirm('¿Estás seguro de que querés cerrar sesión?');
 
-    if (confirmLogout){
-  // Limpiar todos los datos de sesión
+    if (confirmLogout) {
+      // Elimina los datos del almacenamiento local
+      localStorage.removeItem('token');
+      localStorage.removeItem('user');
+      localStorage.removeItem('refreshToken'); // Si usas refresh tokens
 
-    localStorage.removeItem('token');
-    localStorage.removeItem('user');
-    localStorage.removeItem('refreshToken'); // Si usás refresh token
-  
-  // También limpiar sessionStorage por si acaso
-    sessionStorage.clear();
-  
-  // Resetear variables del componente
-    this.user = null;
-  
-  // ⭐ Mostrar mensaje
-      this.showLogoutMessage = true;
-      
-      // ⭐ Ocultar mensaje después de 3 segundos y redirigir
+      sessionStorage.clear(); // Limpieza adicional por las dudas
+
+      this.user = null; // Resetea el usuario en memoria
+
+      this.showLogoutMessage = true; // Muestra mensaje de "Sesión cerrada"
+
+      // Oculta mensaje
       setTimeout(() => {
-      this.showLogoutMessage = false;
-      
-      // ⭐ Esperar más tiempo para que el fade sea más visible
-      setTimeout(() => {
-        this.router.navigate(['']);
-      }, 800); // 800ms para que termine el fade lento
-    }, 4000); // 4 segundos mostrando el mensaje
-    }
-  }
+        this.showLogoutMessage = false;
 
-  ngOnInit(): void {
-    const justLoggedIn = localStorage.getItem('justLoggedIn');
-    const justRegisteredIn = localStorage.getItem('justRegisteredIn');
-    this.initialization();
-    if (justRegisteredIn === 'true') {
-      this.showRegisterMessage = true;
-       // Limpiar la marca
-      localStorage.removeItem('justRegisteredIn');
-      setTimeout(() => {
-    this.showRegisterMessage = false;
-     }, 3000);
-    }
-    if (justLoggedIn === 'true') {
-      this.showLoginMessage = true;
-       // Limpiar la marca
-      localStorage.removeItem('justLoggedIn');
-    setTimeout(() => {
-      this.mostrarFade = true;
-    }, 10);
-
-    setTimeout(() => {
-      this.mostrarFade = false;
-
-    setTimeout(() => {
-        this.mostrarMensaje = false;
-      }, 500); // coincide con la duración del CSS
-    }, 3000);
-    
-    }
-    
-  }
-  async initialization(): Promise<void> {
-    try {
-      this.globalStatusService.setLoading(true);
-      const data = await this.apiService.getData();
-      this.items = data;
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      this.globalStatusService.setLoading(false);
+        // Da tiempo para ver el efecto fade y redirige al home
+        setTimeout(() => {
+          this.router.navigate(['']);
+        }, 800);
+      }, 4000);
     }
   }
 }

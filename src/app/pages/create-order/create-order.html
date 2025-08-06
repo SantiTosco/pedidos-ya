@@ -1,3 +1,4 @@
+<!-- Barra de navegación superior con botón para volver -->
 <nav>
   <div class="container">
     <div class="d-flex justify-content-between align-items-center py-3">
@@ -8,14 +9,16 @@
   </div>
 </nav>
 
+<!-- Contenedor principal del carrito -->
 <div class="cart-container">
   <h2 class="mb-4 text-center">Mi Carrito</h2>
 
   <div class="cart-items">
+    <!-- Itera sobre los ítems del carrito -->
     @for (item of items; track $index) {
       <div class="cart-item card mb-3 p-3">
         <div class="row g-0">
-          <!-- Columna de la imagen -->
+          <!-- Columna: Imagen del producto -->
           <div class="img col-md-2 d-flex align-items-center justify-content-center flex-wrap gap-4">
             <img 
               [src]="item.image" 
@@ -24,19 +27,29 @@
               style="max-height: 100px;"
             >
           </div>
-          <!-- Columna de detalles -->
+
+          <!-- Columna: Detalles del producto -->
           <div class="col-md-8">
             <div class="card-body">
+              <!-- Nombre del producto -->
               <h5 class="card-title">{{ item.name }}</h5>
+
+              <!-- Precio y controles de cantidad -->
               <div class="d-flex justify-content-between">
+                <!-- Precio del producto -->
                 <p class="card-text mb-0">Price: <strong>{{ item.price | currency }}</strong></p>
-                <!-- Controles de cantidad + Remove (apilados) -->
+
+                <!-- Controles de cantidad y botón para eliminar -->
                 <div class="d-flex flex-column">
                   <div class="quantity-controls mb-2">
+                    <!-- Botón para disminuir cantidad -->
                     <button (click)="updateQuantity(item.name, -1)" class="btn btn-menos btn-outline-secondary">-</button>
                     <span class="mx-2">{{ item.quantity }}</span>
+                    <!-- Botón para aumentar cantidad -->
                     <button (click)="updateQuantity(item.name, 1)" class="btn btn-mas btn-outline-secondary">+</button>
                   </div>
+
+                  <!-- Botón para eliminar el producto del carrito -->
                   <button 
                     (click)="removeItem(item.name)" 
                     class="btn btn-danger btn-sm align-self-start"
@@ -51,14 +64,14 @@
       </div>
     }
 
-    <!-- Vaciar carrito -->
+    <!-- Botón para vaciar todo el carrito -->
     <div class="d-flex justify-content-end mb-3" *ngIf="items.length > 0">
       <button class="btn btn-danger" (click)="clearCart()">
         <i class="bi bi-trash"></i> Vaciar Carrito
       </button>
     </div>
 
-    <!-- Si carrito tiene items, mostrar Total y Pagar -->
+    <!-- Si hay ítems en el carrito, mostrar total y botón para pagar -->
     <div *ngIf="items.length > 0" class="cart-total card mt-3 p-3">
       <div class="d-flex justify-content-between">
         <h5 class="mb-0">Total:</h5>
@@ -67,7 +80,7 @@
       <button class="btn btn-pagar w-100 mt-3">Ir a Pagar</button>
     </div>
 
-    <!-- Si carrito está vacío, mostrar mensaje -->
+    <!-- Si el carrito está vacío, mostrar mensaje amigable -->
     <div *ngIf="items.length === 0" class="text-center my-5">
       <h4>🛒 Tu carrito está vacío! 😞</h4>
     </div>

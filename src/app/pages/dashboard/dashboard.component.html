@@ -1,3 +1,4 @@
+<!-- Mensaje de bienvenida al iniciar sesión -->
 <div
   class="login-message-overlay"
   *ngIf="mostrarMensaje"
@@ -10,25 +11,41 @@
     ¡Bienvenido! Has iniciado sesión correctamente.
   </div>
 </div>
+
+<!-- Menú desplegable de perfil de usuario -->
 <div class="dropdown d-flex justify-content-end mb-3">
-      <button class="btn btn-outline-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-bs-toggle="dropdown" aria-expanded="false">
-        <i class="bi bi-person-circle me-2"></i> Mi Perfil
-      </button>
-      <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-          <li><a class="dropdown-item" (click)="goToOrders()">Mis Pedidos</a></li>
-          <li><a class="dropdown-item" (click)="goToProfile()">Ver Perfil</a></li>
-          <li><a class="dropdown-item">Mis Direcciones</a></li>
-          <li><a class="dropdown-item">Ayuda en Línea</a></li>
-          <li><hr class="dropdown-divider"></li>
-          <li><a class="dropdown-item text-danger"  (click)="logOut()">Cerrar Sesión</a></li>
-      </ul>
-    </div> 
-<div class="logout-message" [class.show]="showLogoutMessage" *ngIf="showLogoutMessage">
+  <button class="btn btn-outline-secondary dropdown-toggle" 
+          type="button" 
+          id="dropdownMenuButton" 
+          data-bs-toggle="dropdown" 
+          aria-expanded="false">
+    <i class="bi bi-person-circle me-2"></i> Mi Perfil
+  </button>
+
+  <!-- Opciones del menú -->
+  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+    <li><a class="dropdown-item" (click)="goToOrders()">Mis Pedidos</a></li>
+    <li><a class="dropdown-item" (click)="goToProfile()">Ver Perfil</a></li>
+    <li><a class="dropdown-item">Mis Direcciones</a></li>
+    <li><a class="dropdown-item">Ayuda en Línea</a></li>
+    <li><hr class="dropdown-divider"></li>
+    <li>
+      <a class="dropdown-item text-danger" (click)="logOut()">Cerrar Sesión</a>
+    </li>
+  </ul>
+</div>
+
+<!-- Mensaje de cierre de sesión -->
+<div class="logout-message" 
+     [class.show]="showLogoutMessage" 
+     *ngIf="showLogoutMessage">
   <div class="alert alert-success d-flex align-items-center">
     <i class="bi bi-check-circle-fill me-2"></i>
     <strong>¡Sesión cerrada correctamente! Cargando...</strong>
   </div>
-</div> 
+</div>
+
+<!-- Sección principal con título y subtítulo -->
 <div class="container py-5">
   <div class="d-flex align-items-center mb-4">
     <div>
@@ -36,16 +53,23 @@
       <p class="text-muted mb-0">Descubrí lo más pedido cerca tuyo</p>
     </div> 
   </div>
-  <!-- Grid de Cards -->
+
+  <!-- Grid de cards de productos o restaurantes -->
   <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- Itera sobre los ítems para mostrar una card por cada uno -->
     @for(item of items; track $index) {
       <div class="col">
         <div class="card h-100 shadow-sm">
+          <!-- Imagen principal del ítem -->
           <img [src]="item.image" class="card-img-top">
+          
+          <!-- Cuerpo de la card: nombre y descripción -->
           <div class="card-body">
             <h5 class="card-title">{{ item.name }}</h5>
             <p class="card-text text-muted">{{ item.description }}</p>
           </div>
+
+          <!-- Pie de la card con botón -->
           <div class="card-footer bg-white border-top-0">
             <button class="btn btn-orange">Ver Más</button>
           </div>
@@ -54,4 +78,5 @@
     }
   </div>
 </div>
+
 
