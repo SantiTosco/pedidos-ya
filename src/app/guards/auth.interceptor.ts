@@ -3,7 +3,7 @@ import { inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { catchError, throwError } from 'rxjs';
 
-// Interceptor funcional para Angular standalone
+// Interceptor para Angular standalone
 export const authInterceptor: HttpInterceptorFn = (req, next) => {
   const router = inject(Router);
   

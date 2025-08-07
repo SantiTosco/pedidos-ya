@@ -45,17 +45,19 @@ interface RegisterResponse {
 })
 export class AuthService {
 
+  
+  // URL base del backend
   private apiUrl = 'http://localhost:3001';
   private http = inject(HttpClient);
 
   private isAuthenticatedSubject = new BehaviorSubject<boolean>(this.hasValidToken());
   public isAuthenticated$ = this.isAuthenticatedSubject.asObservable();
 
+  // Inicia sesión del usuario
   login(credentials: LoginRequest): Observable<LoginResponse> {
     return this.http.post<BackendLoginResponse>(`${this.apiUrl}/users/login`, credentials)
       .pipe(
         map(response => {
-          // Adapta la respuesta del backend al formato que espera el frontend
           return {
             success: true,
             message: 'Login exitoso',
@@ -79,16 +81,17 @@ export class AuthService {
 
   }
 
+  // Registra un nuevo usuario
   register(user: RegisterRequest): Observable<RegisterResponse> {
-    console.log('🚀 AuthService.register() llamado con:', user);
+    console.log('AuthService.register() llamado con:', user);
 
     return this.http.post<any>(`${this.apiUrl}/users/register`, user)
     .pipe(
       tap(rawResponse => {
-        console.log('🔍 RESPUESTA CRUDA del backend:', rawResponse); 
+        console.log('RESPUESTA CRUDA del backend:', rawResponse); 
       }),
       map(response =>{
-        console.log('🔄 map() ejecutado, response:', response);
+        console.log('map() ejecutado, response:', response);
         console.log("Usuario:", response.user);
         return {
           success: true,
@@ -99,7 +102,7 @@ export class AuthService {
         };
       }),
       tap(response => {
-        console.log('👀 tap() ejecutado, response:', response);
+        console.log('tap() ejecutado, response:', response);
         //Guardamos los tokens y actualizamos el estado
         if (response.success && response.token) {
           this.setTokens(response.token, response.refreshToken);
@@ -112,6 +115,7 @@ export class AuthService {
     );
   }
 
+  // Maneja errores de las peticiones HTTP
   private handleError(error: HttpErrorResponse) {
     let errorMessage = 'Ocurrió un error desconocido';
     
@@ -144,6 +148,7 @@ export class AuthService {
     console.log('Token guardado:', localStorage.getItem('accessToken'));
   }
 
+  // Guarda datos del usuario en localStorage
   private setUser(user: any): void {
     localStorage.setItem('user', JSON.stringify(user));
   }
@@ -169,9 +174,9 @@ export class AuthService {
   //metodo logout
   logout(): void {
     //Elimina los tokens y el usuario del localStorage
-    localStorage.removeItem('token'); //Elimina el token
-    localStorage.removeItem('refreshToken'); //Elimina el token de refresco
-    localStorage.removeItem('user'); //Elimina el usuario
+    localStorage.removeItem('token'); 
+    localStorage.removeItem('refreshToken'); 
+    localStorage.removeItem('user'); 
     //Actualiza el estado de autenticación
     this.updateAuthStatus(false);
   }
@@ -181,9 +186,9 @@ export class AuthService {
     try {
       //Obtiene el payload del token
       const payload = JSON.parse(atob(token.split('.')[1]));
-      //Obtiene la fecha actual, en milisegundos
+      //Obtiene la fecha actual
       const now = Date.now() / 1000;
-      //Devuelve si la fecha actual es anterior a la fecha de expiración
+      //Valida fecha (para ver si expiró o no)
       return payload.exp < now;
     } catch (error) {
       //Si el token no es válido, devuelve true (expirado)
@@ -201,23 +206,26 @@ export class AuthService {
   getCurrentUser(): any {
     //Recupera el usuario del localStorage
     const userStr = localStorage.getItem('user');
-    //Devuelve el usuario si está presente transformandolo en un objeto JSON, o null si no
+    //Devuelve el usuario 
     return userStr ? JSON.parse(userStr) : null;
   }
+
+  // Obtiene el ID del usuario
   getUsuarioId(): number | null {
   const token = this.getToken();
   if (!token) return null;
 
     try {
       const payload = JSON.parse(atob(token.split('.')[1]));
-      console.log('Payload del token:', payload); // 👈 Mostramos todo
-      return payload.sub || payload.id || payload.usuarioId; // aún no sabemos cuál es
+      console.log('Payload del token:', payload);
+      return payload.sub || payload.id || payload.usuarioId;
     } catch (error) {
       console.error('Error al decodificar token:', error);
       return null;
     }
   }
 
+  //Valida si existe el mail
   async findMails(): Promise<string[]> {
     return await firstValueFrom(this.http.get<string[]>(`${this.apiUrl}/users/mails`));
   }

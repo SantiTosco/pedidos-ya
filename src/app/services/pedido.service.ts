@@ -19,10 +19,3 @@ export class PedidoService {
   return this.http.get<any>(this.apiUrl, { params });
 }
 }
-  /*getPedidos(): Observable<{ items: Pedido[] }> {
-    return this.http.get<{ items: Pedido[] }>(this.apiUrl);
-  }
-}/*
-/*getPedidos(page: number = 1, limit: number = 10): Observable<any> {
-  return this.http.get<any>(`/pedidos?page=${page}&limit=${limit}`);
-}*/

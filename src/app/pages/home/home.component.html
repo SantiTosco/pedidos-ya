@@ -1,37 +1,52 @@
+<!-- Botones de acceso (Login / Registro) alineados a la derecha -->
 <div class="d-flex justify-content-end gap-2 mt-3 me-3">
+  <!-- Botón para navegar a la página de inicio de sesión -->
   <button class="btn btn-outline-primary" (click)="goToLogin()">
     <i class="bi bi-box-arrow-in-right me-1"></i>
     Iniciar Sesión
   </button>
 
+  <!-- Botón para navegar a la página de registro -->
   <button class="btn btn-primary" (click)="goToRegister()">
     <i class="bi bi-person-plus-fill me-1"></i>
     Registrarse
   </button>
 </div>
+
+<!-- Contenedor principal del contenido -->
 <div class="container py-5">
+
+  <!-- Encabezado de la sección -->
   <div class="d-flex align-items-center mb-4">
     <div>
       <h1 class="fw-bold mb-1">Explorá las mejores opciones</h1>
       <p class="text-muted mb-0">Descubrí lo más pedido cerca tuyo</p>
     </div> 
   </div>
-  <!-- Grid de Cards -->
+
+  <!-- Grilla de cards con los ítems -->
   <div class="row row-cols-1 row-cols-md-3 g-4">
+    <!-- Iteración sobre la lista de ítems -->
     @for(item of items; track $index) {
       <div class="col">
         <div class="card h-100 shadow-sm">
+          
+          <!-- Imagen del ítem -->
           <img [src]="item.image" class="card-img-top">
+
+          <!-- Cuerpo de la card con nombre y descripción -->
           <div class="card-body">
             <h5 class="card-title">{{ item.name }}</h5>
             <p class="card-text text-muted">{{ item.description }}</p>
           </div>
+
+          <!-- Pie de la card con botón -->
           <div class="card-footer bg-white border-top-0">
             <button class="btn btn-orange">Ver Más</button>
           </div>
+
         </div>
       </div>
     }
   </div>
 </div>
-

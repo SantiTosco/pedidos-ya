@@ -1,5 +1,4 @@
 import { Routes } from '@angular/router';
-import { TemplateComponent } from './pages/template/template.component';
 import { HomeComponent } from './pages/home/home.component';
 import { LoginComponent } from './pages/login/login.component';
 import { RegisterComponent } from './pages/register/register.component';
@@ -9,14 +8,14 @@ import { PerfilComponent } from './pages/perfil/perfil.component';
 import { authGuard, loginGuard } from './guards/auth.guard';
 
 export const routes: Routes = [
-  // 🏠 Ruta raíz - redirige según autenticación
+  //Ruta raíz, redirige si ya está autenticado
   {
     path: '',
     redirectTo: '',
     pathMatch: 'full'
   },
 
-  // 🔓 Rutas públicas (solo para usuarios NO autenticados)
+  //Rutas públicas (solo para usuarios NO autenticados)
   {
     path: 'login',
     component: LoginComponent,
@@ -33,7 +32,7 @@ export const routes: Routes = [
     canActivate: [loginGuard] // Redirige a dashboard si ya está logueado
   },
 
-  // 🔒 Dashboard como ruta protegida principal
+  //Dashboard como ruta protegida principal
   {
     path: 'dashboard',
     loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent),
@@ -45,23 +44,18 @@ export const routes: Routes = [
     canActivate: [authGuard]
   },
   
-  // 🔒 Rutas protegidas con template
+
+  //rutas 
   {
     path: '',
-    component: TemplateComponent,
     canActivate: [authGuard],
     children: [
-      { 
-        path: '', 
-        redirectTo: '', 
-        pathMatch: 'full' 
-      },
       { 
         path: '', 
         component: HomeComponent 
       },
       { 
-        path: 'perfil', 
+        path: 'perfil',   
         component: PerfilComponent 
       },
       { 
@@ -75,14 +69,8 @@ export const routes: Routes = [
     ]
   },
 
-  // 🧪 Ruta de testing (temporal - quítala en producción)
-  {
-    path: 'test-dashboard',
-    loadComponent: () => import('./pages/dashboard/dashboard.component').then(m => m.DashboardComponent)
-    // Sin guard para testing
-  },
   
-  // 🔄 Wildcard - redirige a login si no está autenticado
+  //redirige a login si no está autenticado
   { 
     path: '**', 
     redirectTo: '/dashboard' 

@@ -3,7 +3,7 @@ import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angula
 import { Router, NavigationEnd } from '@angular/router';
 import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
-import { AuthService } from '../../guards/auth.service'; // Ajusta la ruta según tu estructura
+import { AuthService } from '../../guards/auth.service'; 
 
 @Component({
   selector: 'app-login',
@@ -34,40 +34,41 @@ export class LoginComponent implements OnInit {
     }
 
   ngOnInit() {
-    // 🔍 DEBUG: Ver estado inicial
+    // DEBUG para controlar
     console.log('=== DEBUG AUTH STATE ===');
     console.log('Token en localStorage:', localStorage.getItem('token'));
     console.log('¿Está autenticado?', this.authService.isAuthenticated());
     console.log('URL actual:', this.router.url);
     
-    // Suscribirse a cambios de estado de autenticación
-    //this.authService.isAuthenticated$.subscribe(isAuth => {
-    //  console.log('Estado de autenticación cambió a:', isAuth);
-    //});
     
-    // Suscribirse a cambios de ruta
+    // Cambios de ruta
     this.router.events.subscribe(event => {
       if (event instanceof NavigationEnd) {
         console.log('Navegación completada a:', event.url );
       }
     });
+
+    // Redirige al dashboard si el usuario ya está autenticado
     setTimeout(() => {
     if (this.authService.isAuthenticated() && this.router.url === '/login') {
-    console.log('⚠️ Usuario autenticado pero en login, redirigiendo...');
+    console.log('Usuario autenticado pero en login, redirigiendo...');
     this.router.navigate(['/dashboard']);
     }   
     }, 100);
   }
   
 
+  // Lleva al dashboard
   private redirectToDashboard(): void {
     this.router.navigate(['/dashboard']);
   }
 
+  // Lleva al registro
   goToRegister(): void {
     this.router.navigate(['/register']);
   }
 
+  // Inicio de sesión, guarda los datos de autenticación
   onSubmit(): void {
     if (this.loginForm.valid) {
       this.loading = true;
@@ -90,7 +91,6 @@ export class LoginComponent implements OnInit {
           if (response.success && response.token && response.user) {
             console.log('Login exitoso:', response.user);
             console.log('Respuesta completa:', response);
-            // Guardar datos del usuario si es necesario
             localStorage.setItem('token', response.token!);
             localStorage.setItem('refreshToken', response.refreshToken || '');
             localStorage.setItem('user', JSON.stringify(response.user!));
@@ -98,16 +98,16 @@ export class LoginComponent implements OnInit {
             this.authService.updateAuthStatus(true);
             console.log('----------------------------------------------');
             this.authService.isAuthenticated$.subscribe(auth => {
-            console.log('🔐 Estado de autenticación después del login:', auth);
+            console.log('Estado de autenticación después del login:', auth);
             });
             console.log('----------------------------------------------');
-            console.log('💾 Datos guardados en localStorage');
-            console.log('🔑 Token:', localStorage.getItem('token'));
-            console.log('👤 User:', localStorage.getItem('user'));
+            console.log('Datos guardados en localStorage');
+            console.log('Token:', localStorage.getItem('token'));
+            console.log('User:', localStorage.getItem('user'));
             console.log('Estado de autenticación actualizado');
             console.log('isAuthenticated$:', this.authService.isAuthenticated$);
             console.log('----------------------------------------------');
-            console.log('🧭 Navegando a dashboard...');
+            console.log('Navegando a dashboard...');
             this.redirectToDashboard();
           } else {
             this.errorMessage = response.message || 'Error en el login';
@@ -124,6 +124,7 @@ export class LoginComponent implements OnInit {
     }
   }
 
+// Marca todos los campos del formulario como touched para mostrar errores
   private markFormGroupTouched(): void {
     Object.keys(this.loginForm.controls).forEach(key => {
       const control = this.loginForm.get(key);

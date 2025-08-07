@@ -11,6 +11,7 @@ import { GlobalStatusService } from '../../services/global-status.service';
 export class TemplateComponent {
   constructor(private globalStatusService: GlobalStatusService) {}
 
+  // Devuelve si la aplicación está en estado de carga
   isLoading(): boolean {
     return this.globalStatusService.isLoading();
   }
