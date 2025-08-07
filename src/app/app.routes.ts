@@ -43,6 +43,11 @@ export const routes: Routes = [
     loadComponent: () => import('./pages/perfil/perfil.component').then(m => m.PerfilComponent),
     canActivate: [authGuard]
   },
+  {
+    path: 'carrito',
+    loadComponent: () => import('./pages/create-order/create-order').then(m => m.CreateOrder),
+    canActivate: [authGuard]
+  },
   
 
   //rutas 
