@@ -59,7 +59,7 @@ export class PerfilComponent implements OnInit {
     }
 
     // Hacer petición al backend para datos actualizados
-    this.userService.getProfile().subscribe({
+    this.userService.findByEmail().subscribe({
       next: (response) => {
         console.log('👤 Usuario desde API:', response);
         

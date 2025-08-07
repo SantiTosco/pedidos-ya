@@ -132,7 +132,7 @@ export class RegisterComponent {
         return (control: AbstractControl): Promise<ValidationErrors | null> => {
             const email = control.value;
 
-            if (!email) return Promise.resolve(null); // No valida si el campo de mail estávacío
+            if (!email) return Promise.resolve(null); // No valida la existencia si el campo de mail está vacío
 
             return authService.findMails().then(mails => {
             return mails.includes(email) ? { emailExists: true } : null;
