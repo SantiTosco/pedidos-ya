@@ -66,8 +66,9 @@ export class ListOrderComponent implements OnInit {
     // Llama al servicio para obtener los pedidos
        this.pedidoService.getPedidos(1, 100).subscribe({
         next: (data) => {
-          const pedidosUsuario = data.items.filter((p: Pedido) => p.usuarioId === usuarioId);
-
+          console.log(data);
+          const pedidosUsuario = data.filter((p: Pedido) => p.usuarioId === usuarioId);
+          console.log(pedidosUsuario);
           // Paginar en frontend
           this.totalPages = Math.ceil(pedidosUsuario.length / 4);
           const inicio = (this.currentPage - 1) * 4;
