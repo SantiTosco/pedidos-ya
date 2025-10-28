@@ -82,15 +82,14 @@ export class LoginComponent implements OnInit {
       this.authService.login(credentials).subscribe({
         next: (response) => {
           this.loading = false;
-          console.log('🔍 RESPUESTA COMPLETA DEL BACKEND:', response);
+          console.log('🔍 RESPUESTA DEL BACKEND:');
           console.log('🔍 response.user:', response.user);
           console.log('🔍 response.accessToken:', response.token);
           console.log('🔍 response.token:', response.token);
           console.log('🔍 Keys de la respuesta:', Object.keys(response));
-          console.log('🔍 Tipo de response.user:', typeof response.user);
           if (response.success && response.token && response.user) {
             console.log('Login exitoso:', response.user);
-            console.log('Respuesta completa:', response);
+            
             localStorage.setItem('token', response.token!);
             localStorage.setItem('refreshToken', response.refreshToken || '');
             localStorage.setItem('user', JSON.stringify(response.user!));

@@ -166,10 +166,10 @@ export class AuthService {
 
   // Método público para verificar autenticación (usado por el guard)
   isAuthenticated(): boolean {
-  const token = localStorage.getItem('authToken'); 
-  const user = localStorage.getItem('user');
-  return !!(token && user);
-}
+    const token = localStorage.getItem('authToken'); 
+    const user = localStorage.getItem('user');
+    return !!(token && user);
+  }
 
   //metodo logout
   logout(): void {

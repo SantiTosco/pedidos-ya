@@ -69,8 +69,8 @@ export class RegisterComponent {
             this.errorMessage = '';
             
             const registerData = {
-            email: this.registerForm.value.email,
-            password: this.registerForm.value.password
+                email: this.registerForm.value.email,
+                password: this.registerForm.value.password
             };
     
             console.log('📤 Enviando datos:', registerData);             
