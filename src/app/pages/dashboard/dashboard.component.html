@@ -12,27 +12,38 @@
   </div>
 </div>
 
-<!-- Menú desplegable de perfil de usuario -->
-<div class="dropdown d-flex justify-content-end mb-3">
-  <button class="btn btn-outline-secondary dropdown-toggle" 
-          type="button" 
-          id="dropdownMenuButton" 
-          data-bs-toggle="dropdown" 
-          aria-expanded="false">
-    <i class="bi bi-person-circle me-2"></i> Mi Perfil
+<!-- Barra de navegación superior con botones -->
+<div class="d-flex justify-content-end align-items-center mb-3 gap-2">
+  <!-- Botón Mi Carrito -->
+  <button class="btn btn-outline-primary d-flex align-items-center" (click)="goToCart()">
+    <i class="bi bi-cart3 me-2"></i>
+    Mi Carrito
+    <!-- Badge opcional para mostrar cantidad de items -->
+    <span class="badge bg-danger ms-2" *ngIf="cartItemCount > 0">{{ cartItemCount }}</span>
   </button>
 
-  <!-- Opciones del menú -->
-  <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
-    <li><a class="dropdown-item" (click)="goToOrders()">Mis Pedidos</a></li>
-    <li><a class="dropdown-item" (click)="goToProfile()">Ver Perfil</a></li>
-    <li><a class="dropdown-item">Mis Direcciones</a></li>
-    <li><a class="dropdown-item">Ayuda en Línea</a></li>
-    <li><hr class="dropdown-divider"></li>
-    <li>
-      <a class="dropdown-item text-danger" (click)="logOut()">Cerrar Sesión</a>
-    </li>
-  </ul>
+  <!-- Menú desplegable de perfil de usuario -->
+  <div class="dropdown">
+    <button class="btn btn-outline-secondary dropdown-toggle d-flex align-items-center"
+            type="button"
+            id="dropdownMenuButton"
+            data-bs-toggle="dropdown"
+            aria-expanded="false">
+      <i class="bi bi-person-circle me-2"></i> Mi Perfil
+    </button>
+    
+    <!-- Opciones del menú -->
+    <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="dropdownMenuButton">
+      <li><a class="dropdown-item" (click)="goToOrders()">Mis Pedidos</a></li>
+      <li><a class="dropdown-item" (click)="goToProfile()">Ver Perfil</a></li>
+      <li><a class="dropdown-item">Mis Direcciones</a></li>
+      <li><a class="dropdown-item">Ayuda en Línea</a></li>
+      <li><hr class="dropdown-divider"></li>
+      <li>
+        <a class="dropdown-item text-danger" (click)="logOut()">Cerrar Sesión</a>
+      </li>
+    </ul>
+  </div>
 </div>
 
 <!-- Mensaje de cierre de sesión -->

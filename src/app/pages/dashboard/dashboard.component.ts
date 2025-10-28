@@ -17,6 +17,7 @@ export class DashboardComponent implements OnInit {
  // Variables para mostrar mensajes en pantalla
   mostrarMensaje = true;
   mostrarFade = false;
+  cartItemCount: number = 0;
 
   // Lista de ítems que se mostrarán en cards
   items: Array<{ image: string; name: string; description: string }> = [];
@@ -40,6 +41,7 @@ export class DashboardComponent implements OnInit {
     const justLoggedIn = localStorage.getItem('justLoggedIn'); // Marca temporal para mostrar el mensaje de bienvenida
 
     this.initialization();
+    this.loadCartCount();
 
     // Si el usuario acaba de iniciar sesión
     if (justLoggedIn === 'true') {
@@ -75,6 +77,17 @@ export class DashboardComponent implements OnInit {
     }
   }
 
+  // Método para cargar el contador del carrito
+  loadCartCount(): void {
+    // Aquí puedes obtener el número de items del carrito desde localStorage o un servicio
+    const cart = JSON.parse(localStorage.getItem('cart') || '[]');
+    this.cartItemCount = cart.length;
+  }
+
+  // Navega al carrito de compras
+  goToCart(): void {
+    this.router.navigate(['/carrito']); // Ajusta la ruta según tu configuración
+  }
   // Navega a la vista de pedidos del usuario
   goToOrders(): void {
     this.router.navigate(['/list-order']);

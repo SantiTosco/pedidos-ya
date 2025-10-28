@@ -19,33 +19,41 @@
       <!-- Tarjeta principal que contiene la lista de pedidos -->
       <div class="card shadow p-4 mb-4">
         <h2 class="mb-4">Mis Pedidos</h2>
+  <!-- Verificar si hay pedidos -->
+  @if (pedidos && pedidos.length > 0) {
+    <!-- Iteración sobre el array de pedidos -->
+    @for (pedido of pedidos; track pedido.id) {
+      <div class="card shadow-sm p-3 mb-3 rounded pedido-card">
 
-        <!-- Iteración sobre el array de pedidos -->
-        @for (pedido of pedidos; track pedido.id) {
-          <div class="card shadow-sm p-3 mb-3 rounded pedido-card">
+        <!-- ID del pedido -->
+        <p><strong>ID:</strong> {{ pedido?.id }}</p>
 
-            <!-- ID del pedido -->
-            <p><strong>ID:</strong> {{ pedido?.id }}</p>
+        <!-- Estado del pedido, con estilos dinámicos según su valor -->
+        <p>
+          <strong>Estado:</strong>
+          <span [ngClass]="{
+            'text-warning': pedido.estado === 'pending',
+            'text-primary': pedido.estado === 'in_progress',
+            'text-success': pedido.estado === 'delivered'
+          }">
+            {{ getEstadoLabel(pedido.estado) }} <!-- Método que devuelve una etiqueta legible -->
+          </span>
+        </p>
 
-            <!-- Estado del pedido, con estilos dinámicos según su valor -->
-            <p>
-              <strong>Estado:</strong>
-              <span [ngClass]="{
-                'text-warning': pedido.estado === 'pending',
-                'text-primary': pedido.estado === 'in_progress',
-                'text-success': pedido.estado === 'delivered'
-              }">
-                {{ getEstadoLabel(pedido.estado) }} <!-- Método que devuelve una etiqueta legible -->
-              </span>
-            </p>
-
-            <!-- Dirección de entrega del pedido -->
-            <p><strong>Domicilio:</strong> 
-              {{ pedido?.location?.street }} {{ pedido?.location?.number }}
-            </p>
-          </div>
-        }
-        
+        <!-- Dirección de entrega del pedido -->
+        <p><strong>Domicilio:</strong> 
+          {{ pedido?.location?.street }} {{ pedido?.location?.number }}
+        </p>
+      </div>
+    }
+  } @else {
+    <!-- Mensaje cuando no hay pedidos -->
+    <div class="alert alert-info text-center p-4">
+      <i class="fas fa-info-circle mb-2"></i>
+      <h5>No hay pedidos realizados</h5>
+      <p class="mb-0">Actualmente no tienes pedidos en tu lista.</p>
+    </div>
+  }
         <!-- Paginación: permite avanzar o retroceder entre páginas -->
         <div class="d-flex justify-content-between align-items-center pt-3">
           <!-- Botón "Anterior", deshabilitado si estás en la primera página -->

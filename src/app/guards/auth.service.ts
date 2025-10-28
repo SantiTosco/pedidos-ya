@@ -225,8 +225,4 @@ export class AuthService {
     }
   }
 
-  //Valida si existe el mail
-  async findMails(): Promise<string[]> {
-    return await firstValueFrom(this.http.get<string[]>(`${this.apiUrl}/users/mails`));
-  }
 }
