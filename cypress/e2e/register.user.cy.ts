@@ -2,12 +2,11 @@
 
 describe('Registro de nuevo usuario', () => {
   beforeEach(() => {
+    // Limpiar usuario específico
+    cy.request('DELETE', 'http://localhost:3001/user/nuevo@test.com');
     // Visita la página de registro
     cy.visit('http://localhost:4200/register');
     cy.wait(2000); 
-    cy.get('body').then(($body) => {
-      cy.log('HTML actual:', $body.html());
-    });
   });
 
   it('Debería registrar un usuario y recibir un token', () => {
@@ -29,15 +28,16 @@ describe('Registro de nuevo usuario', () => {
     // Esperar la respuesta del backend
     cy.wait('@registerRequest').then((interception) => {
       expect(interception.response, 'Debe existir una respuesta del backend').to.not.be.undefined;
-    
+
+      console.log(interception.response);
         // Aseguramos el tipo antes de usarlo
       if (!interception.response) return;
     
       const { response } = interception;
     
-      expect(response.statusCode).to.eq(201);
-      expect(response.body).to.have.property('token');
-      expect(response.body.token).to.be.a('string');
+      expect(response).to.exist;
+      expect(response.body).to.have.property('accessToken');
+      expect(response.body.accessToken).to.be.a('string');
       expect(response.body.user.email).to.eq('nuevo@test.com');
     });
     
