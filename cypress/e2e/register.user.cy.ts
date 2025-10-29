@@ -6,8 +6,6 @@ describe('Registro de nuevo usuario', () => {
       cy.request('DELETE', 'http://localhost:3001/user/nuevo@test.com');
     });
   beforeEach(() => {
-    // Limpiar usuario específico
-    //cy.request('DELETE', 'http://localhost:3001/user/nuevo@test.com');
     // Visita la página de registro
     cy.visit('http://localhost:4200/register');
     cy.wait(2000); 
@@ -47,7 +45,7 @@ describe('Registro de nuevo usuario', () => {
     });
     
     // Verificar que la app redirige o muestra el mensaje esperado
-    cy.url().should('include', '/dashboard'); // o donde sea que se redirija
+    cy.url().should('include', '/dashboard'); 
 
 });
 });
